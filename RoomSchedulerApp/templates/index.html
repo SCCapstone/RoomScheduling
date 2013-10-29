@@ -1,0 +1,37 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Enter USC Room Sceduling Site</title>
+</head>
+
+<body>
+
+<div id="container" align="center" style="float:none; height:700px; width:960px">
+	
+    <div id="banner" align="center">  <img src="banner6.png" width="960" height="180" /> </div>
+	<div id="menubar" align="center" > <a href="">Home</a> <a href="">Equiptment</a>
+    										<a href="">Rooms </a> </div>
+    <br  />
+	<div align="center;id=login" style="float:none;">  
+    	{% if user %}
+    	<p>Hello, {{user.nickname}}! Do you want to <a href="{{logout_url}}">Log out?</p>
+  		{% else %}
+    	<p><a href="{{login_url}}">Log In</a></p>
+  		{% endif %}
+	</div>
+    
+	<br  />
+    
+    <div align="center">
+    <table>
+    <tr><th>Nickname</th><th>URL</th><th>When</th></tr>
+    {% for login in logins %}
+      <tr><td>{{login.user.nickname}}</td><td>{{login.user.user_id}}</td><td>{{login.timestamp}}</td></tr>
+    {% endfor %}
+  </table>
+  </div>
+</div>
+
+</body>
+</html>
