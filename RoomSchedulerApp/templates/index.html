@@ -2,18 +2,30 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>Enter USC Room Sceduling Site</title>
+<title>Enter USC Room Scheduling Site</title>
+<link rel="stylesheet" href="/css/style.css"/>
+
 </head>
 
 <body>
 
-<div id="container" align="center" style="float:none; height:700px; width:960px">
+<div id="container">
 	
-    <div id="banner" align="center">  <img src="banner6.png" width="960" height="180" /> </div>
-	<div id="menubar" align="center" > <a href="">Home</a> <a href="">Equiptment</a>
-    										<a href="">Rooms </a> </div>
+    <div id="banner">  
+        <img src="banner6.png"/> 
+    </div>
+    
+	<div id="nav">
+	   <ul id= "nav">
+        <li><a href="#">Home</a></li>
+        <li><a href="#">Equipment</a></li>
+        <li><a href="#">Rooms</a></li>
+        <li><a style="background-image: none;" href="#">Help</a></li>
+       </ul>
+    </div>
+        
     <br  />
-	<div align="center;id=login" style="float:none;">  
+	<div align="center; id=login" style="float:none;">  
     	{% if user %}
     	<p>Hello, {{user.nickname}}! Do you want to <a href="{{logout_url}}">Log out?</p>
   		{% else %}
