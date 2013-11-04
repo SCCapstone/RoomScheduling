@@ -12,10 +12,10 @@
 <div id="container">
 	
     <div id="banner">  
-        <img src="banner6.png"/> 
+        <img src="static/banner6.png" width="960" height="180"/> 
     </div>
     
-	<div id="nav">
+	<div align="center" id="nav">
 	   <ul id= "nav">
         <li><a href="#">Home</a></li>
         <li><a href="#">Equipment</a></li>
@@ -25,7 +25,7 @@
     </div>
         
     <br  />
-	<div align="center; id=login" style="float:none;">  
+	<div align="center" id="login">  
     	{% if user %}
     	<p>Hello, {{user.nickname}}! Do you want to <a href="{{logout_url}}">Log out?</p>
   		{% else %}
