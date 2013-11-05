@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>Enter USC Room Scheduling Site</title>
+<title>Schedule a Room</title>
 <link rel="stylesheet" href="/css/style.css"/>
 
 </head>
@@ -23,26 +23,19 @@
         <li><a style="background-image: none;" href="#">Help</a></li>
        </ul>
     </div>
-        
+    
     <br  />
-	<div align="center" id="login">  
-    	{% if user %}
-    	<p>Welcome, {{user.nickname}}! Do you want to <a href="{{logout_url}}">Log out?</p>
-  		{% else %}
-    	<p><a href="{{login_url}}">Log In</a></p>
-  		{% endif %}
-	</div>
     
-	<br  />
+    <form name="rsubmission" action="rooms.py" method="get" >
     
-    <div align="center">
-    <table>
-    <tr><th>Nickname</th><th>URL</th><th>When</th></tr>
-    {% for login in logins %}
-      <tr><td>{{login.user.nickname}}</td><td>{{login.user.user_id}}</td><td>{{login.timestamp}}</td></tr>
-    {% endfor %}
-  </table>
-  </div>
+    Room Number: <input type="text" name="roomnum"  /> <br />
+    Start Date: <input type="date" name="sdate"  /> <br />
+    End Date: <input type="date" name="edate"  /> <br />
+    
+    <input type="submit" value="Submit"  /> <br />
+    
+    </form>
+    
 </div>
 
 </body>
