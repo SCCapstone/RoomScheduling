@@ -1,0 +1,89 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Help with USC Room Scheduling</title>
+<link rel="stylesheet" href="/css/style.css"/>
+
+</head>
+
+<body>
+
+<div id="container">
+	
+    <div id="banner">  
+        <img src="images/banner6.png" width="960" height="180"/> 
+    </div>
+    
+	<div align="center" id="nav">
+	   <ul id= "nav">
+        <li><a href="/">Home</a></li>
+        <li><a href="/equipment">Equipment</a></li>
+        <li><a href="/rooms">Rooms</a></li>
+        <li><a style="background-image: none;" href="/help">Help</a></li>
+       </ul>
+    </div>
+    
+    <br  />
+    
+    <div align="center" id="wmsg">
+    
+    <p>Hello {{user.nickname}} how may we help you: Enter message below </p>
+    </div>
+    <br  />
+    
+    <div align="center" id="textarea" >
+	<?php
+		function spamcheck($field)
+  		{
+  		//filter_var() sanitizes the e-mail
+  		//address using FILTER_SANITIZE_EMAIL
+  		$field=filter_var($field, FILTER_SANITIZE_EMAIL);
+
+  		//filter_var() validates the e-mail
+  		//address using FILTER_VALIDATE_EMAIL
+  		if(filter_var($field, FILTER_VALIDATE_EMAIL))
+    	{
+    		return TRUE;
+    	}
+  		else
+    	{
+    		return FALSE;
+    	}
+  		}
+
+		if (isset($_REQUEST['email']))
+  		{//if "email" is filled out, proceed
+
+  		//check if the email address is invalid
+  		$mailcheck = spamcheck($_REQUEST['email']);
+  		if ($mailcheck==FALSE)
+    	{
+    	echo "Invalid input";
+    	}
+  		else
+    	{//send email
+    	$email = $_REQUEST['email'] ;
+    	$subject = $_REQUEST['subject'] ;
+    	$message = $_REQUEST['message'] ;
+    	mail("someone@example.com", "Subject: $subject",
+    	$message, "From: $email" );
+    	echo "Thank you for using our mail form";
+    	}
+  		}
+		else
+  		{//if "email" is not filled out, display the form
+  		echo "<form method='post' action='/sendmail'>
+  		Email: <input name='email' type='text' ><br />
+  		Subject: <input name='subject' type='text'><br />
+  		<textarea name='message' rows='6' cols='50'> Enter message </textarea><br>
+  		<input type='submit' value='Send Message'>
+  		</form>";
+  		}
+	?>
+    </div>
+    
+</div>
+
+</body>
+</html>

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>Enter USC Room Scheduling Site</title>
+<title>Select Equipment</title>
 <link rel="stylesheet" href="/css/style.css"/>
 
 </head>
@@ -23,26 +23,29 @@
         <li><a style="background-image: none;" href="/help">Help</a></li>
        </ul>
     </div>
-        
+    
     <br  />
-	<div align="center" id="login">  
-    	{% if user %}
-    	<p>Welcome, {{user.nickname}}! Do you want to <a href="{{logout_url}}">Log out?</p>
-  		{% else %}
-    	<p><a href="{{login_url}}">Log In</a></p>
-  		{% endif %}
-	</div>
     
-	<br  />
+    <div align="center" id="wmsg">
     
-    <div align="center">
-    <table>
-    <tr><th>Nickname</th><th>URL</th><th>When</th></tr>
-    {% for login in logins %}
-      <tr><td>{{login.user.nickname}}</td><td>{{login.user.user_id}}</td><td>{{login.timestamp}}</td></tr>
-    {% endfor %}
-  </table>
-  </div>
+    <p>Hello {{user.nickname}} Please Select Equipment: </p>
+    </div>
+    <br  />
+    
+    <div id="form" align="center">
+    <form name="esubmission" action="/esubmit" method="get" >
+     Projector <input type="checkbox" name=""  /> Amount <input type="text" name=""  /> <br  />
+     Chairs    <input type="checkbox" name=""  /> Amount <input type="text" name=""  /> <br  />
+     Tables    <input type="checkbox" name=""  /> Amount <input type="text" name=""  /> <br  />
+     Desks     <input type="checkbox" name=""  /> Amount <input type="text" name=""  /> <br  />
+     
+     <br  />
+     
+     <input type="submit" value="Submit"  />
+     
+    </form>
+    </div>
+    
 </div>
 
 </body>

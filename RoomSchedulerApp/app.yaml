@@ -16,6 +16,12 @@ handlers:
 
 - url: /rooms\.html
   script: main.py
+  
+- url: /help\.html
+  script: main.py
+  
+- url: /equipment\.html
+  script: main.py
 
 - url: /.*
   script: main.py
