@@ -1,12 +1,21 @@
 application: roomschedulerapp
 version: 1
-runtime: python
+runtime: python27
 api_version: 1
+threadsafe: no
 
 handlers:
 - url: /css
   static_dir: css
+
 - url: /images
   static_dir: images
-- url: .*
+
+- url: /static
+  static_dir: static
+
+- url: /rooms\.html
+  script: main.py
+
+- url: /.*
   script: main.py

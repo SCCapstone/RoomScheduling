@@ -17,24 +17,32 @@
     
 	<div align="center" id="nav">
 	   <ul id= "nav">
-        <li><a href="index.html">Home</a></li>
+        <li><a href="/">Home</a></li>
         <li><a href="#">Equipment</a></li>
-        <li><a href="rooms.html">Rooms</a></li>
+        <li><a href="/rooms">Rooms</a></li>
         <li><a style="background-image: none;" href="#">Help</a></li>
        </ul>
     </div>
     
     <br  />
     
-    <form name="rsubmission" action="rooms.py" method="get" >
+    <div align="center" id="wmsg">
+    
+    <p>Hello {{user.nickname}} Please Enter the following: </p>
+    </div>
+    <br  />
+    
+    <div id="form" align="center">
+    <form name="rsubmission" action="/rsubmit" method="get" >
     
     Room Number: <input type="text" name="roomnum"  /> <br />
     Start Date: <input type="date" name="sdate"  /> <br />
     End Date: <input type="date" name="edate"  /> <br />
-    
+    <br  />
     <input type="submit" value="Submit"  /> <br />
     
     </form>
+    </div>
     
 </div>
 

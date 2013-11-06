@@ -67,12 +67,32 @@ class MainHandler(webapp.RequestHandler):
         'user': user,
         'logins': logins,
     })
+    
+class RoomHandler(webapp.RequestHandler):
+  def render_template(self, file, template_vals):
+    path = os.path.join(os.path.dirname(__file__), 'templates', file)
+    self.response.out.write(template.render(path, template_vals))
+    
+  def get(self):
+    user = users.get_current_user()
+    self.render_template("rooms.html", {
+        'user': user,
+    })
+    
+class SelectionHandler(webapp.RequestHandler):
+  def get(self):
+    roomnum = self.request.get('roomnum')
+    startdate = self.request.get('sdate')
+    enddate = self.request.get('edate')
+    self.response.write(roomnum + ' ' + startdate + ' ' + enddate)
 
 
 application = webapp.WSGIApplication([
     ('/', MainHandler),
     ('/login', LoginHandler),
     ('/apps_login', AppsFederationHandler),
+    ('/rooms', RoomHandler),
+    ('/rsubmit', SelectionHandler),
 ], debug=True)
 application = middleware.AeoidMiddleware(application)
 
