@@ -3,7 +3,7 @@ fieldset {border-style:none;}
 img {border-style:none;}
 
 form.openid ul { text-align:center; list-style-type:none; display:inline;}
-form.openid ul li {float:left; padding:4px}
+form.openid ul li {display:inline-block;padding:4px}
 form.openid ul li span {padding:0 1em 0 3px}
 form.openid fieldset {clear:both; padding:1em 0}
 form.openid div+fieldset {display:none}
