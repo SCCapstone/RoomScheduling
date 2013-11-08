@@ -16,12 +16,19 @@
     </div>
     
 	<div align="center" id="nav">
-	   <ul id= "nav">
+	   {% if user %}
+	   <ul id="nav">
         <li><a href="/">Home</a></li>
         <li><a href="/equipment">Equipment</a></li>
         <li><a href="/rooms">Rooms</a></li>
         <li><a style="background-image: none;" href="/help">Help</a></li>
        </ul>
+		{% else %}
+	   <ul id="nav">
+        <li><a href="/">Home</a></li>
+        <li><a style="background-image: none;" href="/help">Help</a></li>
+       </ul>
+       {% endif %}
     </div>
     
     <br  />
@@ -33,54 +40,13 @@
     <br  />
     
     <div align="center" id="textarea" >
-	<?php
-		function spamcheck($field)
-  		{
-  		//filter_var() sanitizes the e-mail
-  		//address using FILTER_SANITIZE_EMAIL
-  		$field=filter_var($field, FILTER_SANITIZE_EMAIL);
-
-  		//filter_var() validates the e-mail
-  		//address using FILTER_VALIDATE_EMAIL
-  		if(filter_var($field, FILTER_VALIDATE_EMAIL))
-    	{
-    		return TRUE;
-    	}
-  		else
-    	{
-    		return FALSE;
-    	}
-  		}
-
-		if (isset($_REQUEST['email']))
-  		{//if "email" is filled out, proceed
-
-  		//check if the email address is invalid
-  		$mailcheck = spamcheck($_REQUEST['email']);
-  		if ($mailcheck==FALSE)
-    	{
-    	echo "Invalid input";
-    	}
-  		else
-    	{//send email
-    	$email = $_REQUEST['email'] ;
-    	$subject = $_REQUEST['subject'] ;
-    	$message = $_REQUEST['message'] ;
-    	mail("someone@example.com", "Subject: $subject",
-    	$message, "From: $email" );
-    	echo "Thank you for using our mail form";
-    	}
-  		}
-		else
-  		{//if "email" is not filled out, display the form
-  		echo "<form method='post' action='/sendmail'>
-  		Email: <input name='email' type='text' ><br />
-  		Subject: <input name='subject' type='text'><br />
-  		<textarea name='message' rows='6' cols='50'> Enter message </textarea><br>
-  		<input type='submit' value='Send Message'>
-  		</form>";
-  		}
-	?>
+ 		<form method="post" action="/sendmail">
+  		Email: <input type="text" name="email"><br />
+  		Subject: <input  type="text" name="subject"><br />
+  		<textarea name="message" rows="6" cols="50"> Enter message </textarea>
+  		<br />
+  		<input type="submit" value="Send Message">
+  		</form>
     </div>
     
 </div>
