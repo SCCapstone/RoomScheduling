@@ -29,7 +29,7 @@ body{
 
 #nav ul{
 	list-style-type: none;
-	background-image: url(http://www.secondpicture.com/tutorials/web_design/navi_bg.png);
+	background-image: url("/images/navi_bg.png");
 	height: 80px;
 	width: 960px;
 	margin: auto;
@@ -41,7 +41,7 @@ body{
 }
 
 #nav ul a{
-	background-image: url(http://www.secondpicture.com/tutorials/web_design/navi_bg_divider.png);
+	background-image: url("/images/navi_bg_divider.png");
 	background-repeat: no-repeat;
 	background-position: right;
 	padding-right: 32px;
