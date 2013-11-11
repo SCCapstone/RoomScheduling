@@ -4,6 +4,9 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title>Schedule a Room</title>
 <link rel="stylesheet" href="/css/style.css"/>
+<script language="javascript" type="text/javascript" src="static/datetimepicker.js">
+//Date Time Picker script- by TengYong Ng of http://www.rainforestnet.com
+</script>
 
 </head>
 
@@ -33,14 +36,17 @@
     <br  />
     
     <div id="form" align="center">
-    <form name="rsubmission" action="/rsubmit" method="get" >
-    
-    Room Number: <input type="text" name="roomnum"  /> <br />
-    Start Date: <input type="date" name="sdate"  /> <br />
-    End Date: <input type="date" name="edate"  /> <br />
-    <br  />
-    <input type="submit" value="Submit"  /> <br />
-    
+
+ 	<form name="rsubmission" action="/rsubmit" method="get">
+ 	
+ 	Select Room: <select name="Room Number"
+ 		<option name="roomnum" value=""> </option>
+ 	</select>
+ 	<br />
+ 	Start Date and Time: <input type="text" name="sdate" id="sdate" maxlength="25" size="30"><a href="javascript:NewCal('sdate','ddmmmyyyy',true,12)"><img src="images/cal.gif" width="16" height="16" border="0" alt="Pick a date"></a><br />
+    End Date and Time: <input type="text" name="edate" id="edate" maxlength="25" size="30"><a href="javascript:NewCal('edate','ddmmmyyyy',true,12)"><img src="images/cal.gif" width="16" height="16" border="0" alt="Pick a date"></a><br />
+    <br />
+    <input type="submit" value="Submit" /> <br />
     </form>
     </div>
     

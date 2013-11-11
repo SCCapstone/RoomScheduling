@@ -23,6 +23,7 @@ from google.appengine.ext import db
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp import template
 from google.appengine.ext.webapp import util
+from google.appengine.api import mail
 from aeoid import middleware, users
 
 
@@ -96,6 +97,16 @@ class HelpHandler(webapp.RequestHandler):
     self.render_template("help.html", {
         'user': user,
     })
+
+class MailHandler(webapp.RequestHandler):
+  def post(self):
+    fromaddr = self.request.get('email') #has to be a google email
+    subject = self.request.get('subject')
+    msg = self.request.get('message')
+    toaddr = ''
+    #correct so user sends to google mail address
+    mail.send_mail(toaddr, fromaddr, subject, msg)
+    self.response.write('Sent Message')
     
 class EquipHandler(webapp.RequestHandler):
   def render_template(self, file, template_vals):
@@ -116,6 +127,7 @@ application = webapp.WSGIApplication([
     ('/rooms', RoomHandler),
     ('/rsubmit', SelectionHandler),
     ('/help', HelpHandler),
+    ('/sendmail', MailHandler),
     ('/equipment', EquipHandler),
 ], debug=True)
 application = middleware.AeoidMiddleware(application)
