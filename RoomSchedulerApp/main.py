@@ -18,6 +18,7 @@
 import os
 import logging
 import urllib
+import datetime
 
 from google.appengine.ext import db
 from google.appengine.ext import webapp
@@ -30,7 +31,16 @@ from aeoid import middleware, users
 class LoginRecord(db.Model):
   user = users.UserProperty(auto_current_user_add=True, required=True)
   timestamp = db.DateTimeProperty(auto_now_add=True)
-
+  
+class RoomSchedule(db.Model):
+  roomnum = db.StringProperty(required=True)
+  userid = users.UserProperty(required=True)
+  role = db.StringProperty(required=True, choices=set(["student","faculty","admin"]))
+  startdate = db.DateProperty(required=True)
+  enddate = db.DateProperty(required=True)
+  starttime = db.DateTimeProperty(required=True)
+  endtime = db.DateTimeProperty(required=True)
+  reserved = db.BooleanProperty(indexed=False)
 
 class LoginHandler(webapp.RequestHandler):
   def get(self):
@@ -79,13 +89,25 @@ class RoomHandler(webapp.RequestHandler):
     self.render_template("rooms.html", {
         'user': user,
     })
-    
+
 class SelectionHandler(webapp.RequestHandler):
   def get(self):
-    roomnum = self.request.get('roomnum')
-    startdate = self.request.get('sdate')
-    enddate = self.request.get('edate')
-    self.response.write(roomnum + ' ' + startdate + ' ' + enddate)
+    user = users.get_current_user()
+    sdate = self.request.get('sdate')
+    edate = self.request.get('edate')
+    rnum = self.request.get('roomtoselect')
+    stime = self.request.get('stime')
+    etime = self.request.get('etime')
+    rss = RoomSchedule(roomnum=rnum,userid=user,role="admin",
+    startdate = datetime.datetime.strptime(sdate.strip(" "), '%d-%m-%Y').date(),
+    enddate = datetime.datetime.strptime(edate.strip(" "), '%d-%m-%Y').date(),
+    starttime = datetime.datetime.strptime(stime, '%I:%M %p'), 
+    endtime = datetime.datetime.strptime(etime, '%I:%M %p'), reserved=True)
+    rss.put()
+#     if()
+    self.redirect('/roomsuccess')
+#     else
+#     self.redirect('/roomfailure')
 
 class HelpHandler(webapp.RequestHandler):
   def render_template(self, file, template_vals):
@@ -119,6 +141,37 @@ class EquipHandler(webapp.RequestHandler):
         'user': user,
     })
 
+class RoomSuccessHandler(webapp.RequestHandler):
+  def render_template(self, file, template_vals):
+    path = os.path.join(os.path.dirname(__file__), 'templates', file)
+    self.response.out.write(template.render(path, template_vals))
+    
+  def get(self):
+    user = users.get_current_user()
+    timestamp = datetime.datetime.now()
+#     RS = db.GqlQuery("SELECT * FROM RoomSchedule WHERE userid="user"")
+#       for rs in RS:
+#         self.response.out.write('<b>%s</b>' % rs.roomnum)
+    self.render_template("roomsuccess.html", {
+        'user': user,
+        'timestamp': timestamp,
+    })
+    
+class RoomFailureHandler(webapp.RequestHandler):
+  def render_template(self, file, template_vals):
+    path = os.path.join(os.path.dirname(__file__), 'templates', file)
+    self.response.out.write(template.render(path, template_vals))
+    
+  def get(self):
+    user = users.get_current_user()
+    timestamp = datetime.datetime.now()
+#     RS = db.GqlQuery("SELECT * FROM RoomSchedule WHERE userid="user"")
+#       for rs in RS:
+#         self.response.out.write('<b>%s</b>' % rs.roomnum)
+    self.render_template("roomfailure.html", {
+        'user': user,
+        'timestamp': timestamp,
+    })
 
 application = webapp.WSGIApplication([
     ('/', MainHandler),
@@ -129,6 +182,8 @@ application = webapp.WSGIApplication([
     ('/help', HelpHandler),
     ('/sendmail', MailHandler),
     ('/equipment', EquipHandler),
+    ('/roomsuccess', RoomSuccessHandler),
+    ('/roomfailure', RoomFailureHandler),
 ], debug=True)
 application = middleware.AeoidMiddleware(application)
 

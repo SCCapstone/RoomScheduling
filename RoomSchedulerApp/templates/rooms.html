@@ -4,9 +4,40 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title>Schedule a Room</title>
 <link rel="stylesheet" href="/css/style.css"/>
+<link rel="stylesheet" href="/css/timePicker.css"/>
 <script language="javascript" type="text/javascript" src="static/datetimepicker.js">
 //Date Time Picker script- by TengYong Ng of http://www.rainforestnet.com
 </script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script type="text/javascript" src="static/jquery.timePicker.js"></script>
+<script type="text/javascript">
+  jQuery(function() {
+    // 02.00 AM - 03.30 PM, 15 minutes steps.
+    $("#stime").timePicker({
+  startTime: "02.00",  // Using string. Can take string or Date object.
+  endTime: new Date(0, 0, 0, 15, 30, 0),  // Using Date object.
+  show24Hours: false,
+  separator:':',
+  step: 15});
+  });
+  </script>
+
+<script type="text/javascript">
+  jQuery(function() {
+    // 02.00 AM - 03.30 PM, 15 minutes steps.
+    $("#etime").timePicker({
+  startTime: "02.00",  // Using string. Can take string or Date object.
+  endTime: new Date(0, 0, 0, 15, 30, 0),  // Using Date object.
+  show24Hours: false,
+  separator:':',
+  step: 15});
+  });
+  </script>     
+  <script type="text/javascript">
+  // Analytics.
+  var _gaq=_gaq||[];_gaq.push(["_setAccount","UA-123444-3"]),_gaq.push(["_trackPageview"]),function(){var a=document.createElement("script");a.type="text/javascript",a.async=!0,a.src=("https:"==document.location.protocol?"https://ssl":"http://www")+".google-analytics.com/ga.js";var b=document.getElementsByTagName("script")[0];b.parentNode.insertBefore(a,b)}()
+  </script>
+</head>
 
 </head>
 
@@ -39,12 +70,16 @@
 
  	<form name="rsubmission" action="/rsubmit" method="get">
  	
- 	Select Room: <select name="Room Number"
- 		<option name="roomnum" value=""> </option>
+ 	Select Room: <select name="roomtoselect" id="roomtoselect" onchange="">
+ 		<option name="roomnum" value="200">200 </option>
+ 		<option name="roomnum" value="300">300 </option>
  	</select>
  	<br />
- 	Start Date and Time: <input type="text" name="sdate" id="sdate" maxlength="25" size="30"><a href="javascript:NewCal('sdate','ddmmmyyyy',true,12)"><img src="images/cal.gif" width="16" height="16" border="0" alt="Pick a date"></a><br />
-    End Date and Time: <input type="text" name="edate" id="edate" maxlength="25" size="30"><a href="javascript:NewCal('edate','ddmmmyyyy',true,12)"><img src="images/cal.gif" width="16" height="16" border="0" alt="Pick a date"></a><br />
+ 	Start Date: <input type="text" name="sdate" id="sdate" size="30"><a href="javascript:NewCal('sdate','ddmmyyyy')"><img src="images/cal.gif" width="16" height="16" border="0" alt="Pick a date"></a><br />
+    End Date: <input type="text" name="edate" id="edate" size="30"><a href="javascript:NewCal('edate','ddmmyyyy')"><img src="images/cal.gif" width="16" height="16" border="0" alt="Pick a date"></a><br />
+    <p>Select times per day </p>
+    <div>Start Time: <input type="text" name="stime" id="stime" size="15" /><br /></div>
+    <div>End Time: <input type="text" name="etime" id="etime" size="15"> <br /></div>
     <br />
     <input type="submit" value="Submit" /> <br />
     </form>
