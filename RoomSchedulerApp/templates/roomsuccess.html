@@ -32,11 +32,22 @@
         
     <br  />
 
-	<div align="center" >
+	<div align="center" id = 'rconfirm'>
 		<p><h1>Success</h1> </p>
 		<br />
 		<p>Successful Submission for {{user.nickname}}</p>
-		<p> Time Submitted: {{timestamp}} </p>
+		
+		<h3>You are requesting to reserve the following:</h3>
+		Room: {{ roomnum }} <br/>
+		At the following times:<br/>
+		Start Date: {{ sdate }}<br/>
+		End Date: {{ edate }}<br/>
+		Start Time: {{ stime }}<br/>
+		End Time: {{ etime }}<br/>
+		
+	    Time Submitted: {{timestamp}}  <br/>
+	</div>
+		
 <!-- 		<p>For Room: {{roomnum}} Starting at Date Time: {{sdate}} Ending: {{edate}} </p> -->
 	</div>
 
