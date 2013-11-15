@@ -91,8 +91,13 @@ class RoomHandler(webapp.RequestHandler):
     })
 
 class SelectionHandler(webapp.RequestHandler):
+  def render_template(self, file, template_vals):
+      path = os.path.join(os.path.dirname(__file__), 'templates', file)
+      self.response.out.write(template.render(path, template_vals))
+      
   def get(self):
     user = users.get_current_user()
+<<<<<<< HEAD
     sdate = self.request.get('sdate')
     edate = self.request.get('edate')
     rnum = self.request.get('roomtoselect')
@@ -109,6 +114,16 @@ class SelectionHandler(webapp.RequestHandler):
 #     else
 #     self.redirect('/roomfailure')
 
+=======
+    roomnum = self.request.get('roomnum')
+    startdate = self.request.get('sdate')
+    enddate = self.request.get('edate')
+    self.render_template("rsubmit.html", {
+        'user': user, 'roomnum': roomnum,'startdate': startdate, 'enddate': enddate,
+    })
+    #self.response.write(roomnum + ' ' + startdate + ' ' + enddate)
+    
+>>>>>>> 401967345e6e185e0a7cd5a61750329d87d17653
 class HelpHandler(webapp.RequestHandler):
   def render_template(self, file, template_vals):
     path = os.path.join(os.path.dirname(__file__), 'templates', file)

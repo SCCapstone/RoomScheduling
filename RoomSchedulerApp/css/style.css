@@ -57,3 +57,10 @@ body{
 #nav ul a:hover {
     color: #FFF;
 }
+
+#rconfirm {
+	margin-left: auto;
+    margin-right: auto;
+	
+	}
+}
