@@ -34,7 +34,8 @@ class LoginRecord(db.Model):
   
 class RoomSchedule(db.Model):
   roomnum = db.StringProperty(required=True)
-  userid = users.UserProperty(required=True)
+#   userid = users.UserProperty(required=True)
+  userid = db.StringProperty(required=True)
   role = db.StringProperty(required=True, choices=set(["student","faculty","admin"]))
   startdate = db.DateProperty(required=True)
   enddate = db.DateProperty(required=True)
@@ -96,8 +97,7 @@ class SelectionHandler(webapp.RequestHandler):
       self.response.out.write(template.render(path, template_vals))
       
   def get(self):
-    user = users.get_current_user()
-
+    user = users.get_current_user().nickname()
     sdate = self.request.get('sdate')
     edate = self.request.get('edate')
     rnum = self.request.get('roomtoselect')
