@@ -99,7 +99,7 @@ class SelectionHandler(webapp.RequestHandler):
       path = os.path.join(os.path.dirname(__file__), 'templates', file)
       self.response.out.write(template.render(path, template_vals))
       
-  def get(self):
+  def post(self):
     user = users.get_current_user().nickname()
     sdate = self.request.get('sdate')
     edate = self.request.get('edate')
