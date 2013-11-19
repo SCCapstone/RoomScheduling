@@ -87,9 +87,12 @@ class RoomHandler(webapp.RequestHandler):
     
   def get(self):
     user = users.get_current_user()
-    self.render_template("rooms.html", {
-        'user': user,
-    })
+    if not user:
+      self.redirect("/login")
+    else:
+      self.render_template("rooms.html", {
+          'user': user,
+      })
 
 class SelectionHandler(webapp.RequestHandler):
   def render_template(self, file, template_vals):
@@ -153,9 +156,12 @@ class EquipHandler(webapp.RequestHandler):
     
   def get(self):
     user = users.get_current_user()
-    self.render_template("equipment.html", {
-        'user': user,
-    })
+    if not user:
+      self.redirect("/login")
+    else:
+      self.render_template("equipment.html", {
+          'user': user,
+      })
 
 class RoomSuccessHandler(webapp.RequestHandler):
   def render_template(self, file, template_vals):
