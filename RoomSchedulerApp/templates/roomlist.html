@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Enter USC Room Scheduling Site</title>
+<link rel="stylesheet" href="/css/style.css"/>
+
+</head>
+
+<body>
+
+<div id="container">
+	
+    <div id="banner">  
+        <img src="images/banner6.png" width="960" height="180"/> 
+    </div>
+    
+	<div align="center" id="nav">
+		{% if user %}
+	   <ul id="nav">
+        <li><a href="/">Home</a></li>
+        <li><a href="/equipment">Equipment</a></li>
+        <li><a href="/rooms">Rooms</a></li>
+        <li><a href="/help">Help</a></li>
+		<li><a style="background-image: none;"  href="{{logout_url}}">Logout</a></li>
+       </ul>
+		{% else %}
+	   <ul id="nav">
+        <li><a href="/">Home</a></li>
+        <li><a href="/help">Help</a></li>
+		<li><a style="background-image: none;" href="{{login_url}}">Login</a></li>
+       </ul>
+       {% endif %}
+    </div>
+	
+		<div align="center">
+	<table>
+
+		<tr>
+			<th>Room Number</th>
+			<th>User ID</th>
+			<th>Role</th>
+			<th>Reserved</th>
+			<th>Start Date</th>
+			<th>Start Time</th>
+			<th>End Date</th>
+			<th>End Time</th>
+		</tr>
+
+		{% for rm in rms %}
+		<tr>
+		  
+			<td>{{rm.roomnum}}</td>
+			<td>{{rm.userid}}</td>
+			<td>{{rm.role}}</td>
+			<td>{{rm.reserved}}</td>
+			<td>{{rm.starttime}}</td>
+			<td>{{rm.enddate}}</td>
+			<td>{{rm.endtime}}</td>
+		<tr>
+		{% endfor %}
+	</table>
+	</div>
+        
+    <br  />
+
+	<br  />
+
+</body>
+</html>

@@ -29,5 +29,8 @@ handlers:
 - url: /roomfailure\.html
   script: main.py
 
+- url: /roomlist\.html
+  script: main.py
+
 - url: /.*
   script: main.py

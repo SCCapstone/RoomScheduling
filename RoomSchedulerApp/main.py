@@ -163,6 +163,23 @@ class EquipHandler(webapp.RequestHandler):
           'user': user,
       })
 
+class RoomListHandler(webapp.RequestHandler):
+  def render_template(self, file, template_vals):
+    path = os.path.join(os.path.dirname(__file__), 'templates', file)
+    self.response.out.write(template.render(path, template_vals))
+
+  def get(self):
+    user = users.get_current_user()
+    if not user:
+      self.redirect("/login")
+    else:
+      rms = db.GqlQuery("SELECT * FROM RoomSchedule")
+      self.render_template("roomlist.html", {
+        'user': user,
+        'rms': rms
+      })
+        
+
 class RoomSuccessHandler(webapp.RequestHandler):
   def render_template(self, file, template_vals):
     path = os.path.join(os.path.dirname(__file__), 'templates', file)
@@ -171,12 +188,13 @@ class RoomSuccessHandler(webapp.RequestHandler):
   def get(self):
     user = users.get_current_user()
     timestamp = datetime.datetime.now()
-#     RS = db.GqlQuery("SELECT * FROM RoomSchedule WHERE userid="user"")
-#       for rs in RS:
-#         self.response.out.write('<b>%s</b>' % rs.roomnum)
+    #RS = db.GqlQuery("SELECT * FROM RoomSchedule")
+    #for rs in RS:
+    #  self.response.out.write('<b>%s</b>' % rs.roomnum)
     self.render_template("roomsuccess.html", {
         'user': user,
         'timestamp': timestamp,
+    #    'RS': RS
     })
     
 class RoomFailureHandler(webapp.RequestHandler):
@@ -204,6 +222,7 @@ application = webapp.WSGIApplication([
     ('/help', HelpHandler),
     ('/sendmail', MailHandler),
     ('/equipment', EquipHandler),
+    ('/roomlist', RoomListHandler),
     ('/roomsuccess', RoomSuccessHandler),
     ('/roomfailure', RoomFailureHandler),
 ], debug=True)
