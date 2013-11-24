@@ -36,6 +36,7 @@
     <div id="form" align="center">
     <form name="esubmission" action="/esubmit" method="post" >
      Equipment:  <select name="equiptoselect" id="equiptoselect" onchange="">
+        <option name="equip" value="None">None</option>
  		<option name="equip" value="Projector">Projector</option>
  		<option name="equip" value="DVD Player">DVD Player</option>
  		<option name="equip" value="COW">COW</option>
@@ -47,9 +48,10 @@
  		<option name="equip" value="Blue/Red netbooks">Blue/Red netbooks</option>
  	</select>
      <br  />
-     iClickers: <input type="text" name="iclickamt" id="iclickamt" >
+     iClickers: <input type="text" name="iclickamt" id="iclickamt" value="0" >
      <br  />
      Laptops: <select name="laptoselect" id="laptoselect" onchange="">
+        <option name="equip" value="None">None</option>
  		<option name="equip" value="A">A</option>
  		<option name="equip" value="B">B</option>
  		<option name="equip" value="C">C</option>

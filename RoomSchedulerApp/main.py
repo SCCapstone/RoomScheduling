@@ -42,6 +42,12 @@ class RoomSchedule(db.Model):
   starttime = db.DateTimeProperty(required=True)
   endtime = db.DateTimeProperty(required=True)
   reserved = db.BooleanProperty(indexed=False)
+  
+class EquipmentUsage(db.Model):
+  userid = db.StringProperty(required=True)
+  equipment = db.StringProperty()
+  iclickeramt = db.StringProperty()
+  laptopsel = db.StringProperty() 
 
 class LoginHandler(webapp.RequestHandler):
   def get(self):
@@ -162,6 +168,28 @@ class EquipHandler(webapp.RequestHandler):
       self.render_template("equipment.html", {
           'user': user,
       })
+      
+class EquipSubmitHandler(webapp.RequestHandler):
+  def render_template(self, file, template_vals):
+    path = os.path.join(os.path.dirname(__file__), 'templates', file)
+    self.response.out.write(template.render(path, template_vals))
+    
+  def post(self):
+    user = users.get_current_user().nickname()
+    equip = self.request.get('equiptoselect')
+    iclick = self.request.get('iclickamt')
+    laptop = self.request.get('laptoselect')
+    timestamp = datetime.datetime.now()
+    eus = EquipmentUsage(userid=user, equipment=equip, iclickeramt=iclick, laptopsel=laptop)
+    eus.put()
+    
+    self.render_template("equipsuccess.html", {
+        'user': user,
+        'equipment': equip,
+        'iclicker': iclick,
+        'laptops': laptop,
+        'timestamp': timestamp,
+    })
 
 class RoomListHandler(webapp.RequestHandler):
   def render_template(self, file, template_vals):
@@ -212,6 +240,32 @@ class RoomFailureHandler(webapp.RequestHandler):
         'user': user,
         'timestamp': timestamp,
     })
+    
+class EquipSuccessHandler(webapp.RequestHandler):
+  def render_template(self, file, template_vals):
+    path = os.path.join(os.path.dirname(__file__), 'templates', file)
+    self.response.out.write(template.render(path, template_vals))
+    
+  def get(self):
+    user = users.get_current_user()
+    timestamp = datetime.datetime.now()
+    
+    self.render_template("equipsuccess.html", {
+        'user': user,
+    })
+
+class EquipFailureHandler(webapp.RequestHandler):
+  def render_template(self, file, template_vals):
+    path = os.path.join(os.path.dirname(__file__), 'templates', file)
+    self.response.out.write(template.render(path, template_vals))
+    
+  def get(self):
+    user = users.get_current_user()
+    timestamp = datetime.datetime.now()
+    
+    self.render_template("equipfailure.html", {
+        'user': user,
+    })
 
 application = webapp.WSGIApplication([
     ('/', MainHandler),
@@ -222,9 +276,12 @@ application = webapp.WSGIApplication([
     ('/help', HelpHandler),
     ('/sendmail', MailHandler),
     ('/equipment', EquipHandler),
+    ('/esubmit', EquipSubmitHandler),
     ('/roomlist', RoomListHandler),
     ('/roomsuccess', RoomSuccessHandler),
     ('/roomfailure', RoomFailureHandler),
+    ('/equipsuccess', EquipSuccessHandler),
+    ('/equipfailure', EquipFailureHandler),
 ], debug=True)
 application = middleware.AeoidMiddleware(application)
 

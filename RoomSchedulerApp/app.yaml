@@ -27,6 +27,12 @@ handlers:
 - url: /equipment\.html
   script: main.py
   
+- url: /equipsuccess\.html
+  script: main.py
+  
+- url: /equipfailure\.html
+  script: main.py
+  
 - url: /roomsuccess\.html
   script: main.py
   
