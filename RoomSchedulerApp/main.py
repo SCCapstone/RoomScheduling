@@ -107,24 +107,23 @@ class SelectionHandler(webapp.RequestHandler):
       
   def post(self):
     user = users.get_current_user().nickname()
-    sdate = self.request.get('sdate')
-    edate = self.request.get('edate')
-    rnum = self.request.get('roomtoselect')
-    stime = self.request.get('stime')
-    etime = self.request.get('etime')
-    timestamp = datetime.datetime.now()
-    rss = RoomSchedule(roomnum=rnum,userid=user,role="admin",
-    startdate = datetime.datetime.strptime(sdate.strip(" "), '%d-%m-%Y').date(),
-    enddate = datetime.datetime.strptime(edate.strip(" "), '%d-%m-%Y').date(),
-    starttime = datetime.datetime.strptime(stime, '%I:%M %p'), 
-    endtime = datetime.datetime.strptime(etime, '%I:%M %p'), reserved=True)
-    rss.put()
-#     if()
-#    self.redirect('/roomsuccess')
-#     else
-#     self.redirect('/roomfailure')
-
-    self.render_template("roomsuccess.html", {
+    try:
+      sdate = self.request.get('sdate')
+      edate = self.request.get('edate')
+      rnum = self.request.get('roomtoselect')
+      stime = self.request.get('stime')
+      etime = self.request.get('etime')
+      timestamp = datetime.datetime.now()
+      rss = RoomSchedule(roomnum=rnum,userid=user,role="admin",
+      startdate = datetime.datetime.strptime(sdate.strip(" "), '%d-%m-%Y').date(),
+      enddate = datetime.datetime.strptime(edate.strip(" "), '%d-%m-%Y').date(),
+      starttime = datetime.datetime.strptime(stime, '%I:%M %p'), 
+      endtime = datetime.datetime.strptime(etime, '%I:%M %p'), reserved=True)
+      rss.put()
+    except ValueError:
+      self.redirect("/roomfailure")
+    else:
+      self.render_template("roomsuccess.html", {
         'user': user,
         'roomnum': rnum,
         'sdate': sdate,
@@ -132,7 +131,7 @@ class SelectionHandler(webapp.RequestHandler):
         'stime': stime,
         'etime': etime,
         'timestamp': timestamp,
-    })
+      })
 
 class HelpHandler(webapp.RequestHandler):
   def render_template(self, file, template_vals):
