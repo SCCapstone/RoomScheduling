@@ -129,6 +129,9 @@ class User(object):
     """
     return self._user_info_key.name()
 
+  def isadmin(self):
+    return self._user_info().isadmin
+
 
 def _get_current_url():
   if os.environ.get('HTTPS') == 'on':
