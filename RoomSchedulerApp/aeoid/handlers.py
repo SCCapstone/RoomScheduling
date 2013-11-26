@@ -117,6 +117,10 @@ class FinishLoginHandler(BaseHandler):
             id_res_data['nickname'] = id_res_data.get('firstname', '') + ' ' + id_res_data.get('lastname', '')
           elif id_res_data.has_key('email'):
             id_res_data['nickname'] = id_res_data['email']
+        if id_res_data['email'] in ['taylort92@gmail.com']:
+          id_res_data['isadmin'] = True
+        else:
+          id_res_data['isadmin'] = False
       except ax.AXError:
         pass
 

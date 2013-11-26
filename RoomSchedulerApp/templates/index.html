@@ -41,6 +41,9 @@
   		{% else %}
     	<p>Welcome to the Room Scheduling Site! Please <a href="{{login_url}}">Log In</a></p>
   		{% endif %}
+		{% if isadmin %}
+		<p> ADMIN </p>
+		{% endif %}
 	</div>
     
 	<br  />
