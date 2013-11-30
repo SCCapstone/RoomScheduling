@@ -84,7 +84,7 @@ class MainHandler(webapp.RequestHandler):
         'logout_url': users.create_logout_url('/'),
         'user': user,
         'logins': logins,
-        'isadmin': user.isadmin
+        'isadmin': False if not user else user.isadmin
     })
     
 class RoomHandler(webapp.RequestHandler):
