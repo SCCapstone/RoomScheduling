@@ -35,10 +35,12 @@
 
 	<form name="request" action="/appreq" method="post">
 		<div align="center">
+	{% if rqs %}
 	<table>
 
 		<tr>
 			<th>Approve</th>
+			<th>Deny</th>
 			<th>Room Number</th>
 			<th>User ID</th>
 			<th>Start Date</th>
@@ -46,10 +48,10 @@
 			<th>End Date</th>
 			<th>End Time</th>
 		</tr>
-
 		{% for rq in rqs %}
 		<tr>
-			<td><input type="checkbox" name="request" value="{{rq.thiskey}}"></td>
+			<td><input type="checkbox" name="approve" value="{{rq.thiskey}}"></td>
+			<td><input type="checkbox" name="deny" value="{{rq.thiskey}}"></td>
 			<td>{{rq.roomnum}}</td>
 			<td>{{rq.userid}}</td>
 			<td>{{rq.startdate}}</td>
@@ -60,6 +62,7 @@
 		{% endfor %}
 	</table>
 	<input type="submit" value="Submit">
+	{% endif %}
 	</div>
         
     <br  />

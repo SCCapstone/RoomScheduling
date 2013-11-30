@@ -242,7 +242,7 @@ class AdminListHandler(webapp.RequestHandler):
         rqlist.append(rq)
       self.render_template("adminlist.html", {
         'user': user,
-        'rqs': rqlist
+        'rqs': rqlist,  
       })
 
 class AppReqHandler(webapp.RequestHandler):
@@ -251,13 +251,17 @@ class AppReqHandler(webapp.RequestHandler):
     self.response.out.write(template.render(path, template_vals))
     
   def post(self):
-    rqs = db.get(self.request.get_all("request"))
-    for rq in rqs:
+    arqs = db.get(self.request.get_all("approve"))
+    drqs = db.get(self.request.get_all("deny"))
+    for rq in arqs:
       accepted = RoomSchedule(roomnum=rq.roomnum, userid=rq.userid,role=rq.role,
                               startdate=rq.startdate,enddate=rq.enddate,
                               starttime=rq.starttime,endtime=rq.endtime,
                               reserved=True)
       accepted.put()
+      rq.delete()
+    for rq in drqs:
+      rq.delete()
     self.redirect("/roomlist")
     
 class RoomSuccessHandler(webapp.RequestHandler):
