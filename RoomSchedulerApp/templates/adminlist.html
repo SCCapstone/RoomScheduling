@@ -33,11 +33,12 @@
        {% endif %}
     </div>
 
-	
+	<form name="request" action="/appreq" method="post">
 		<div align="center">
 	<table>
 
 		<tr>
+			<th>Approve</th>
 			<th>Room Number</th>
 			<th>User ID</th>
 			<th>Start Date</th>
@@ -46,18 +47,19 @@
 			<th>End Time</th>
 		</tr>
 
-		{% for rm in rms %}
+		{% for rq in rqs %}
 		<tr>
-		  
-			<td>{{rm.roomnum}}</td>
-			<td>{{rm.userid}}</td>
-			<td>{{rm.startdate}}</td>
-			<td>{{rm.starttime}}</td>
-			<td>{{rm.enddate}}</td>
-			<td>{{rm.endtime}}</td>
+			<td><input type="checkbox" name="request" value="{{rq.thiskey}}"></td>
+			<td>{{rq.roomnum}}</td>
+			<td>{{rq.userid}}</td>
+			<td>{{rq.startdate}}</td>
+			<td>{{rq.starttime}}</td>
+			<td>{{rq.enddate}}</td>
+			<td>{{rq.endtime}}</td>
 		<tr>
 		{% endfor %}
 	</table>
+	<input type="submit" value="Submit">
 	</div>
         
     <br  />
