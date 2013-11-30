@@ -205,12 +205,43 @@ class RoomListHandler(webapp.RequestHandler):
     else:
       rms = db.GqlQuery("SELECT * FROM RoomSchedule")
       self.render_template("roomlist.html", {
-	    'logout_url': users.create_logout_url('/'),
+	'logout_url': users.create_logout_url('/'),
         'user': user,
         'rms': rms
       })
-        
 
+class AdminListHandler(webapp.RequestHandler):
+  def render_template(self,file,template_vals):
+    path = os.path.join(os.path.dirname(__file__), 'templates',file)
+    self.response.out.write(template.render(path, template_vals))
+
+  def get(self):
+    user = users.get_current_user()
+    if not user:
+      self.redirect("/login")
+    elif not user.isadmin:
+      self.redirect("/")
+    else:
+      rqs = db.GqlQuery("SELECT * FROM RoomSchedule")
+      rqlist = []
+      for rq in rqs:
+        rq.thiskey = rq.key()
+        rqlist.append(rq)
+      self.render_template("adminlist.html", {
+        'user': user,
+        'rqs': rqlist
+      })
+
+class AppReqHandler(webapp.RequestHandler):
+  def render_template(self,file,template_vals):
+    path = os.path.join(os.path.dirname(__file__), 'templates', file)
+    self.response.out.write(template.render(path, template_vals))
+    
+  def post(self):
+    rqs = self.request.get_all("request")
+    for rq in rqs:
+      self.response.out.write(rq + "<br />")
+    
 class RoomSuccessHandler(webapp.RequestHandler):
   def render_template(self, file, template_vals):
     path = os.path.join(os.path.dirname(__file__), 'templates', file)
@@ -285,6 +316,8 @@ application = webapp.WSGIApplication([
     ('/roomfailure', RoomFailureHandler),
     ('/equipsuccess', EquipSuccessHandler),
     ('/equipfailure', EquipFailureHandler),
+    ('/adminlist', AdminListHandler),
+    ('/appreq', AppReqHandler),
 ], debug=True)
 application = middleware.AeoidMiddleware(application)
 
