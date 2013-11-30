@@ -39,8 +39,8 @@ class RoomSchedule(db.Model):
   role = db.StringProperty(required=True, choices=set(["student","faculty","admin"]))
   startdate = db.DateProperty(required=True)
   enddate = db.DateProperty(required=True)
-  starttime = db.DateTimeProperty(required=True)
-  endtime = db.DateTimeProperty(required=True)
+  starttime = db.TimeProperty(required=True)
+  endtime = db.TimeProperty(required=True)
   reserved = db.BooleanProperty(indexed=False)
   
 class EquipmentUsage(db.Model):
