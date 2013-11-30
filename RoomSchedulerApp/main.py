@@ -19,6 +19,7 @@ import os
 import logging
 import urllib
 import datetime
+import time
 
 from google.appengine.ext import db
 from google.appengine.ext import webapp
@@ -35,6 +36,16 @@ class LoginRecord(db.Model):
 class RoomSchedule(db.Model):
   roomnum = db.StringProperty(required=True)
 #   userid = users.UserProperty(required=True)
+  userid = db.StringProperty(required=True)
+  role = db.StringProperty(required=True, choices=set(["student","faculty","admin"]))
+  startdate = db.DateProperty(required=True)
+  enddate = db.DateProperty(required=True)
+  starttime = db.TimeProperty(required=True)
+  endtime = db.TimeProperty(required=True)
+  reserved = db.BooleanProperty(indexed=False)
+
+class ScheduleRequest(db.Model):
+  roomnum = db.StringProperty(required=True)
   userid = db.StringProperty(required=True)
   role = db.StringProperty(required=True, choices=set(["student","faculty","admin"]))
   startdate = db.DateProperty(required=True)
@@ -115,12 +126,14 @@ class SelectionHandler(webapp.RequestHandler):
       rnum = self.request.get('roomtoselect')
       stime = self.request.get('stime')
       etime = self.request.get('etime')
+      mystarttimet = datetime.datetime.strptime(stime,'%I:%M %p').timetuple()
+      myendtimet = datetime.datetime.strptime(etime,'%I:%M %p').timetuple()
       timestamp = datetime.datetime.now()
-      rss = RoomSchedule(roomnum=rnum,userid=user,role="admin",
+      rss = ScheduleRequest(roomnum=rnum,userid=user,role="admin",
       startdate = datetime.datetime.strptime(sdate.strip(" "), '%d-%m-%Y').date(),
       enddate = datetime.datetime.strptime(edate.strip(" "), '%d-%m-%Y').date(),
-      starttime = datetime.datetime.strptime(stime, '%I:%M %p'), 
-      endtime = datetime.datetime.strptime(etime, '%I:%M %p'), reserved=True)
+      starttime = datetime.time(mystarttimet[3],mystarttimet[4]), 
+      endtime = datetime.time(myendtimet[3],myendtimet[4]), reserved=True)
       rss.put()
     except ValueError:
       self.redirect("/roomfailure")
@@ -222,7 +235,7 @@ class AdminListHandler(webapp.RequestHandler):
     elif not user.isadmin:
       self.redirect("/")
     else:
-      rqs = db.GqlQuery("SELECT * FROM RoomSchedule")
+      rqs = db.GqlQuery("SELECT * FROM ScheduleRequest")
       rqlist = []
       for rq in rqs:
         rq.thiskey = rq.key()
@@ -238,9 +251,14 @@ class AppReqHandler(webapp.RequestHandler):
     self.response.out.write(template.render(path, template_vals))
     
   def post(self):
-    rqs = self.request.get_all("request")
+    rqs = db.get(self.request.get_all("request"))
     for rq in rqs:
-      self.response.out.write(rq + "<br />")
+      accepted = RoomSchedule(roomnum=rq.roomnum, userid=rq.userid,role=rq.role,
+                              startdate=rq.startdate,enddate=rq.enddate,
+                              starttime=rq.starttime,endtime=rq.endtime,
+                              reserved=True)
+      accepted.put()
+    self.redirect("/roomlist")
     
 class RoomSuccessHandler(webapp.RequestHandler):
   def render_template(self, file, template_vals):
