@@ -98,7 +98,8 @@ class RoomHandler(webapp.RequestHandler):
       self.redirect("/login")
     else:
       self.render_template("rooms.html", {
-          'user': user,
+        'logout_url': users.create_logout_url('/'),
+        'user': user,
       })
 
 class SelectionHandler(webapp.RequestHandler):
@@ -166,6 +167,7 @@ class EquipHandler(webapp.RequestHandler):
       self.redirect("/login")
     else:
       self.render_template("equipment.html", {
+	      'logout_url': users.create_logout_url('/'),
           'user': user,
       })
       
@@ -203,6 +205,7 @@ class RoomListHandler(webapp.RequestHandler):
     else:
       rms = db.GqlQuery("SELECT * FROM RoomSchedule")
       self.render_template("roomlist.html", {
+	    'logout_url': users.create_logout_url('/'),
         'user': user,
         'rms': rms
       })
