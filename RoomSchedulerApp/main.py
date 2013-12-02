@@ -59,6 +59,13 @@ class EquipmentUsage(db.Model):
   equipment = db.StringProperty()
   iclickeramt = db.StringProperty()
   laptopsel = db.StringProperty() 
+
+class RoomInfo(db.Model):
+  roomnum = db.StringProperty(required=True)
+ 
+class EquipmentInfo(db.Model):
+  equipmenttype = db.StringProperty(required=True)
+  
   
 class BaseHandler(webapp2.RequestHandler):
   def render_template(self, filename, **template_args):
@@ -108,9 +115,11 @@ class RoomHandler(BaseHandler):
     if not user:
       self.redirect("/login")
     else:
+      nums = db.GqlQuery("SELECT * FROM RoomInfo")
       template_args = {
         'logout_url': users.create_logout_url('/'),
         'user': user,
+        'nums': nums
       }
       self.render_template("rooms.html", **template_args)
 
@@ -149,9 +158,10 @@ class SelectionHandler(BaseHandler):
 class HelpHandler(BaseHandler):
   def get(self):
     user = users.get_current_user()
-    self.render_template("help.html", {
+    template_args ={
         'user': user,
-    })
+    }
+    self.render_template("help.html", **template_args)
 
 class MailHandler(BaseHandler):
   def post(self):
@@ -169,9 +179,11 @@ class EquipHandler(BaseHandler):
     if not user:
       self.redirect("/login")
     else:
+      types = db.GqlQuery("SELECT * FROM EquipmentInfo")	
       template_args = {
         'logout_url': users.create_logout_url('/'),
         'user': user,
+	'etypes': types
       }
       self.render_template("equipment.html", **template_args)
       
