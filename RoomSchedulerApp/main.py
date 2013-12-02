@@ -115,7 +115,7 @@ class RoomHandler(BaseHandler):
     if not user:
       self.redirect("/login")
     else:
-      nums = db.GqlQuery("SELECT * FROM RoomInfo")
+      nums = RoomInfo.all().order("roomnum")
       template_args = {
         'logout_url': users.create_logout_url('/'),
         'user': user,
@@ -179,7 +179,7 @@ class EquipHandler(BaseHandler):
     if not user:
       self.redirect("/login")
     else:
-      types = db.GqlQuery("SELECT * FROM EquipmentInfo")	
+      types = EquipmentInfo.all().order("equipmenttype")	
       template_args = {
         'logout_url': users.create_logout_url('/'),
         'user': user,
@@ -212,7 +212,7 @@ class RoomListHandler(BaseHandler):
     if not user:
       self.redirect("/login")
     else:
-      rms = db.GqlQuery("SELECT * FROM RoomSchedule")
+      rms = RoomSchedule.all()
       template_args = {
 	'logout_url': users.create_logout_url('/'),
         'user': user,
@@ -228,7 +228,7 @@ class AdminListHandler(BaseHandler):
     elif not user.isadmin:
       self.redirect("/")
     else:
-      rqs = db.GqlQuery("SELECT * FROM ScheduleRequest")
+      rqs = ScheduleRequest.all()
       template_args ={
         'user': user,
         'rqs': rqs,  
