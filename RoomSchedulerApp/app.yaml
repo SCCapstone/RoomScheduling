@@ -4,6 +4,11 @@ runtime: python27
 api_version: 1
 threadsafe: no
 
+libraries:
+- name: jinja2
+  version: "2.6"
+  
+  
 handlers:
 - url: /css
   static_dir: css

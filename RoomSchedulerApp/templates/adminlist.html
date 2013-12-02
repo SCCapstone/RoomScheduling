@@ -35,7 +35,7 @@
 
 	<form name="request" action="/appreq" method="post">
 		<div align="center">
-	{% if rqs %}
+	{% if rqs.count() > 0 %}
 	<table>
 
 		<tr>
@@ -50,8 +50,9 @@
 		</tr>
 		{% for rq in rqs %}
 		<tr>
-			<td><input type="checkbox" name="approve" value="{{rq.thiskey}}"></td>
-			<td><input type="checkbox" name="deny" value="{{rq.thiskey}}"></td>
+
+			<td><input type="checkbox" name="approve" value="{{rq.key()}}"></td>
+			<td><input type="checkbox" name="deny" value="{{rq.key()}}"></td>
 			<td>{{rq.roomnum}}</td>
 			<td>{{rq.userid}}</td>
 			<td>{{rq.startdate}}</td>
