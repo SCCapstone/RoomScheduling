@@ -46,6 +46,9 @@ handlers:
 
 - url: /roomlist\.html
   script: main.py
+  
+- url: /adminlist\.html
+  script: main.py
 
 - url: /.*
   script: main.py
