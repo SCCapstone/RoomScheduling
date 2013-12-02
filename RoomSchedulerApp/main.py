@@ -65,6 +65,9 @@ class RoomInfo(db.Model):
  
 class EquipmentInfo(db.Model):
   equipmenttype = db.StringProperty(required=True)
+
+class AdminName(db.Model):
+  email = db.StringProperty(required=True)
   
   
 class BaseHandler(webapp2.RequestHandler):
@@ -225,7 +228,7 @@ class AdminListHandler(BaseHandler):
     user = users.get_current_user()
     if not user:
       self.redirect("/login")
-    elif not user.isadmin:
+    elif not user.isadmin():
       self.redirect("/")
     else:
       rqs = ScheduleRequest.all()

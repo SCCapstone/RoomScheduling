@@ -38,11 +38,12 @@
 	<div align="center" id="login">  
     	{% if user %}
     	<p>Welcome, {{user.nickname()}}!</p>
+		{% if user.isadmin() %}
+		<p> ADMIN </p>
+		{% endif %}
   		{% else %}
     	<p>Welcome to the Room Scheduling Site! Please <a href="{{login_url}}">Log In</a></p>
-  		{% endif %}
-		{% if user.isadmin %}
-		<p> ADMIN </p>
+
 		{% endif %}
 	</div>
     
