@@ -22,11 +22,11 @@ import datetime
 import time
 
 from google.appengine.ext import db
-from google.appengine.ext import webapp
-from google.appengine.ext.webapp import template
+import webapp2
 from google.appengine.ext.webapp import util
 from google.appengine.api import mail
 from aeoid import middleware, users
+from webapp2_extras import jinja2
 
 
 class LoginRecord(db.Model):
@@ -59,8 +59,16 @@ class EquipmentUsage(db.Model):
   equipment = db.StringProperty()
   iclickeramt = db.StringProperty()
   laptopsel = db.StringProperty() 
+  
+class BaseHandler(webapp2.RequestHandler):
+  def render_template(self, filename, **template_args):
+    self.response.write(self.jinja2.render_template(filename, **template_args))
+  @webapp2.cached_property  
+  def jinja2(self):
+    return jinja2.get_jinja2(app=self.app)
+  
 
-class LoginHandler(webapp.RequestHandler):
+class LoginHandler(BaseHandler):
   def get(self):
     if users.get_current_user():
       login = LoginRecord()
@@ -69,7 +77,7 @@ class LoginHandler(webapp.RequestHandler):
     self.redirect('/')
 
 
-class AppsFederationHandler(webapp.RequestHandler):
+class AppsFederationHandler(BaseHandler):
   """Handles openid login for federated Google Apps Marketplace apps."""
   def get(self):
     domain = self.request.get("domain")
@@ -81,43 +89,34 @@ class AppsFederationHandler(webapp.RequestHandler):
                     (users.OPENID_LOGIN_PATH, urllib.quote(openid_url)))
 
 
-class MainHandler(webapp.RequestHandler):
-  def render_template(self, file, template_vals):
-    path = os.path.join(os.path.dirname(__file__), 'templates', file)
-    self.response.out.write(template.render(path, template_vals))
-    
+class MainHandler(BaseHandler):
   def get(self):
     user = users.get_current_user()
     logins = LoginRecord.all().order('-timestamp').fetch(20)
     logging.warn([x.user for x in logins])
-    self.render_template("index.html", {
-        'login_url': users.create_login_url('/login'),
-        'logout_url': users.create_logout_url('/'),
-        'user': user,
-        'logins': logins,
-        'isadmin': False if not user else user.isadmin
-    })
+
+    template_args = {
+      'login_url': users.create_login_url('/login'),
+      'logout_url': users.create_logout_url('/'),
+      'user': user,
+      'logins': logins
+    }
+    self.render_template("index.html", **template_args)
+
     
-class RoomHandler(webapp.RequestHandler):
-  def render_template(self, file, template_vals):
-    path = os.path.join(os.path.dirname(__file__), 'templates', file)
-    self.response.out.write(template.render(path, template_vals))
-    
+class RoomHandler(BaseHandler):
   def get(self):
     user = users.get_current_user()
     if not user:
       self.redirect("/login")
     else:
-      self.render_template("rooms.html", {
+      template_args = {
         'logout_url': users.create_logout_url('/'),
         'user': user,
-      })
+      }
+      self.render_template("rooms.html", **template_args)
 
-class SelectionHandler(webapp.RequestHandler):
-  def render_template(self, file, template_vals):
-      path = os.path.join(os.path.dirname(__file__), 'templates', file)
-      self.response.out.write(template.render(path, template_vals))
-      
+class SelectionHandler(BaseHandler):
   def post(self):
     user = users.get_current_user().nickname()
     try:
@@ -138,7 +137,7 @@ class SelectionHandler(webapp.RequestHandler):
     except ValueError:
       self.redirect("/roomfailure")
     else:
-      self.render_template("roomsuccess.html", {
+      template_args = {
         'user': user,
         'roomnum': rnum,
         'sdate': sdate,
@@ -146,20 +145,17 @@ class SelectionHandler(webapp.RequestHandler):
         'stime': stime,
         'etime': etime,
         'timestamp': timestamp,
-      })
+      }
+      self.render_template("roomsuccess.html", **template_args)
 
-class HelpHandler(webapp.RequestHandler):
-  def render_template(self, file, template_vals):
-    path = os.path.join(os.path.dirname(__file__), 'templates', file)
-    self.response.out.write(template.render(path, template_vals))
-    
+class HelpHandler(BaseHandler):
   def get(self):
     user = users.get_current_user()
     self.render_template("help.html", {
         'user': user,
     })
 
-class MailHandler(webapp.RequestHandler):
+class MailHandler(BaseHandler):
   def post(self):
     fromaddr = self.request.get('email') #has to be a google email
     subject = self.request.get('subject')
@@ -169,26 +165,19 @@ class MailHandler(webapp.RequestHandler):
     mail.send_mail(toaddr, fromaddr, subject, msg)
     self.response.write('Sent Message')
     
-class EquipHandler(webapp.RequestHandler):
-  def render_template(self, file, template_vals):
-    path = os.path.join(os.path.dirname(__file__), 'templates', file)
-    self.response.out.write(template.render(path, template_vals))
-    
+class EquipHandler(BaseHandler):
   def get(self):
     user = users.get_current_user()
     if not user:
       self.redirect("/login")
     else:
-      self.render_template("equipment.html", {
-	      'logout_url': users.create_logout_url('/'),
-          'user': user,
-      })
+      template_args = {
+        'logout_url': users.create_logout_url('/'),
+        'user': user,
+      }
+      self.render_template("equipment.html", **template_args)
       
-class EquipSubmitHandler(webapp.RequestHandler):
-  def render_template(self, file, template_vals):
-    path = os.path.join(os.path.dirname(__file__), 'templates', file)
-    self.response.out.write(template.render(path, template_vals))
-    
+class EquipSubmitHandler(BaseHandler):
   def post(self):
     user = users.get_current_user().nickname()
     equip = self.request.get('equiptoselect')
@@ -198,36 +187,30 @@ class EquipSubmitHandler(webapp.RequestHandler):
     eus = EquipmentUsage(userid=user, equipment=equip, iclickeramt=iclick, laptopsel=laptop)
     eus.put()
     
-    self.render_template("equipsuccess.html", {
-        'user': user,
-        'equipment': equip,
-        'iclicker': iclick,
-        'laptops': laptop,
-        'timestamp': timestamp,
-    })
+    template_args = {
+      'user': user,
+      'equipment': equip,
+      'iclicker': iclick,
+      'laptops': laptop,
+      'timestamp': timestamp,
+    }
+    self.render_template("equipsuccess.html", **template_args)
 
-class RoomListHandler(webapp.RequestHandler):
-  def render_template(self, file, template_vals):
-    path = os.path.join(os.path.dirname(__file__), 'templates', file)
-    self.response.out.write(template.render(path, template_vals))
-
+class RoomListHandler(BaseHandler):
   def get(self):
     user = users.get_current_user()
     if not user:
       self.redirect("/login")
     else:
       rms = db.GqlQuery("SELECT * FROM RoomSchedule")
-      self.render_template("roomlist.html", {
+      template_args = {
 	'logout_url': users.create_logout_url('/'),
         'user': user,
         'rms': rms
-      })
+      }
+      self.render_template("roomlist.html", **template_args)
 
-class AdminListHandler(webapp.RequestHandler):
-  def render_template(self,file,template_vals):
-    path = os.path.join(os.path.dirname(__file__), 'templates',file)
-    self.response.out.write(template.render(path, template_vals))
-
+class AdminListHandler(BaseHandler):
   def get(self):
     user = users.get_current_user()
     if not user:
@@ -236,20 +219,13 @@ class AdminListHandler(webapp.RequestHandler):
       self.redirect("/")
     else:
       rqs = db.GqlQuery("SELECT * FROM ScheduleRequest")
-      rqlist = []
-      for rq in rqs:
-        rq.thiskey = rq.key()
-        rqlist.append(rq)
-      self.render_template("adminlist.html", {
+      template_args ={
         'user': user,
-        'rqs': rqlist,  
-      })
+        'rqs': rqs,  
+      }
+      self.render_template("adminlist.html", **template_args)
 
-class AppReqHandler(webapp.RequestHandler):
-  def render_template(self,file,template_vals):
-    path = os.path.join(os.path.dirname(__file__), 'templates', file)
-    self.response.out.write(template.render(path, template_vals))
-    
+class AppReqHandler(BaseHandler):   
   def post(self):
     arqs = db.get(self.request.get_all("approve"))
     drqs = db.get(self.request.get_all("deny"))
@@ -264,66 +240,47 @@ class AppReqHandler(webapp.RequestHandler):
       rq.delete()
     self.redirect("/roomlist")
     
-class RoomSuccessHandler(webapp.RequestHandler):
-  def render_template(self, file, template_vals):
-    path = os.path.join(os.path.dirname(__file__), 'templates', file)
-    self.response.out.write(template.render(path, template_vals))
-    
+class RoomSuccessHandler(BaseHandler):  
   def get(self):
     user = users.get_current_user()
     timestamp = datetime.datetime.now()
-    #RS = db.GqlQuery("SELECT * FROM RoomSchedule")
-    #for rs in RS:
-    #  self.response.out.write('<b>%s</b>' % rs.roomnum)
-    self.render_template("roomsuccess.html", {
+    template_args = {
         'user': user,
         'timestamp': timestamp,
-    #    'RS': RS
-    })
+    }
+    self.render_template("roomsuccess.html", **template_args)
     
-class RoomFailureHandler(webapp.RequestHandler):
-  def render_template(self, file, template_vals):
-    path = os.path.join(os.path.dirname(__file__), 'templates', file)
-    self.response.out.write(template.render(path, template_vals))
-    
+class RoomFailureHandler(BaseHandler):
   def get(self):
     user = users.get_current_user()
     timestamp = datetime.datetime.now()
-#     RS = db.GqlQuery("SELECT * FROM RoomSchedule WHERE userid="user"")
-#       for rs in RS:
-#         self.response.out.write('<b>%s</b>' % rs.roomnum)
-    self.render_template("roomfailure.html", {
+    template_args = {
         'user': user,
         'timestamp': timestamp,
-    })
+    }
+    self.render_template("roomfailure.html", **template_args)
     
-class EquipSuccessHandler(webapp.RequestHandler):
-  def render_template(self, file, template_vals):
-    path = os.path.join(os.path.dirname(__file__), 'templates', file)
-    self.response.out.write(template.render(path, template_vals))
-    
+class EquipSuccessHandler(BaseHandler):
   def get(self):
     user = users.get_current_user()
     timestamp = datetime.datetime.now()
     
-    self.render_template("equipsuccess.html", {
+    template_args = {
         'user': user,
-    })
+    }
+    self.render_template("equipsuccess.html", **template_args)
 
-class EquipFailureHandler(webapp.RequestHandler):
-  def render_template(self, file, template_vals):
-    path = os.path.join(os.path.dirname(__file__), 'templates', file)
-    self.response.out.write(template.render(path, template_vals))
-    
+class EquipFailureHandler(BaseHandler):  
   def get(self):
     user = users.get_current_user()
     timestamp = datetime.datetime.now()
     
-    self.render_template("equipfailure.html", {
+    template_args = {
         'user': user,
-    })
+    }
+    self.render_template("equipfailure.html", **template_args)
 
-application = webapp.WSGIApplication([
+application = webapp2.WSGIApplication([
     ('/', MainHandler),
     ('/login', LoginHandler),
     ('/apps_login', AppsFederationHandler),
