@@ -130,7 +130,7 @@ class User(object):
     return self._user_info_key.name()
 
   def isadmin(self):
-    return self._user_info().isadmin
+    return self.user_info().isadmin
 
 
 def _get_current_url():
