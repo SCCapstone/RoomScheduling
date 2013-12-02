@@ -47,6 +47,7 @@ class RoomSchedule(db.Model):
 class ScheduleRequest(db.Model):
   roomnum = db.StringProperty(required=True)
   userid = db.StringProperty(required=True)
+  useremail = db.StringProperty(required=True)
   role = db.StringProperty(required=True, choices=set(["student","faculty","admin"]))
   startdate = db.DateProperty(required=True)
   enddate = db.DateProperty(required=True)
@@ -138,7 +139,7 @@ class SelectionHandler(BaseHandler):
       mystarttimet = datetime.datetime.strptime(stime,'%I:%M %p').timetuple()
       myendtimet = datetime.datetime.strptime(etime,'%I:%M %p').timetuple()
       timestamp = datetime.datetime.now()
-      rss = ScheduleRequest(roomnum=rnum,userid=user,role="admin",
+      rss = ScheduleRequest(roomnum=rnum,userid=user,useremail=users.get_current_user().email(),role="admin",
       startdate = datetime.datetime.strptime(sdate.strip(" "), '%d-%m-%Y').date(),
       enddate = datetime.datetime.strptime(edate.strip(" "), '%d-%m-%Y').date(),
       starttime = datetime.time(mystarttimet[3],mystarttimet[4]), 
@@ -248,7 +249,15 @@ class AppReqHandler(BaseHandler):
                               starttime=rq.starttime,endtime=rq.endtime,
                               reserved=True)
       accepted.put()
+      sender_address = "Room Scheduling Notification <notification@roomscheduler490.appspotmail.com>"
+      subject = "Your request has been approved"
+      body = """
+      Your request of room %s has been approved.
+      """ % rq.roomnum
+      user_address = rq.useremail
+      mail.send_mail(sender_address, user_address, subject, body)
       rq.delete()
+      
     for rq in drqs:
       rq.delete()
     self.redirect("/roomlist")
