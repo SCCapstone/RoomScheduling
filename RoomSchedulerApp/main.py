@@ -241,9 +241,11 @@ class AdminListHandler(BaseHandler):
 
 class AppReqHandler(BaseHandler):   
   def post(self):
-    arqs = db.get(self.request.get_all("approve"))
-    drqs = db.get(self.request.get_all("deny"))
+    arqs = self.request.get_all("approve")
+    drqs = self.request.get_all("deny")
     for rq in arqs:
+      if rq in drqs: drqs.remove(rq)
+      rq = db.get(rq)
       accepted = RoomSchedule(roomnum=rq.roomnum, userid=rq.userid,role=rq.role,
                               startdate=rq.startdate,enddate=rq.enddate,
                               starttime=rq.starttime,endtime=rq.endtime,
@@ -259,6 +261,14 @@ class AppReqHandler(BaseHandler):
       rq.delete()
       
     for rq in drqs:
+      rq = db.get(rq)
+      sender_address = "Room Scheduling Notification <notification@roomscheduler490.appspotmail.com>"
+      subject = "Your request has been denied"
+      body = """
+      Your request of room %s has been denied.
+      """ % rq.roomnum
+      user_address = rq.useremail
+      mail.send_mail(sender_address, user_address, subject, body)
       rq.delete()
     self.redirect("/roomlist")
     
