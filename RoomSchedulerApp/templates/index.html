@@ -22,6 +22,11 @@
         <li><a href="/equipment">Equipment</a></li>
         <li><a href="/rooms">Rooms</a></li>
         <li><a href="/roomlist">Scheduled Rooms</a></li>
+<!-- 
+        {% if user.isadmin %}
+        <li><a href="/adminlist">Check Rooms</a></li>
+        {% endif %}
+ -->
         <li><a href="/help">Help</a></li>
 		<li><a style="background-image: none;"  href="{{logout_url}}">Logout</a></li>
        </ul>
@@ -42,7 +47,8 @@
     	<p>Welcome to the Room Scheduling Site! Please <a href="{{login_url}}">Log In</a></p>
   		{% endif %}
 		{% if user.isadmin %}
-		<p> ADMIN </p>
+		<p> ADMIN ACCESS</p>
+		<a href="/adminlist">Check Scheduled Rooms</a>
 		{% endif %}
 	</div>
     
