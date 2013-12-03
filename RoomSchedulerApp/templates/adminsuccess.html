@@ -33,43 +33,60 @@
        </ul>
        {% endif %}
     </div>
+	
+	<div align="center">
+		{% if arqs %}
+		Approved requests:<br />
+			<table>
 
-	<form name="request" action="/appreq" method="post">
-		<div align="center">
-	{% if rqs.count() > 0 %}
-	<table>
-
-		<tr>
-			<th>Approve</th>
-			<th>Deny</th>
+			<tr>
 			<th>Room Number</th>
 			<th>User ID</th>
 			<th>Start Date</th>
 			<th>Start Time</th>
 			<th>End Date</th>
 			<th>End Time</th>
-		</tr>
-		{% for rq in rqs %}
-		<tr>
+			</tr>
 
-			<td><input type="checkbox" name="approve" value="{{rq.key()}}"></td>
-			<td><input type="checkbox" name="deny" value="{{rq.key()}}"></td>
-			<td>{{rq.roomnum}}</td>
-			<td>{{rq.userid}}</td>
-			<td>{{rq.startdate}}</td>
-			<td>{{rq.starttime}}</td>
-			<td>{{rq.enddate}}</td>
-			<td>{{rq.endtime}}</td>
+		{% for arq in arqs %}
+		<tr>
+			<td>{{arq.roomnum}}</td>
+			<td>{{arq.userid}}</td>
+			<td>{{arq.startdate}}</td>
+			<td>{{arq.starttime}}</td>
+			<td>{{arq.enddate}}</td>
+			<td>{{arq.endtime}}</td>
 		<tr>
 		{% endfor %}
-	</table>
-	<input type="submit" value="Submit">
-	{% endif %}
-	</div>
-        
-    <br  />
+		</table>
+		{% endif %}
+		
+		{% if drqs %}
+		Denied requests:<br />
+			<table>
 
-	<br  />
+			<tr>
+			<th>Room Number</th>
+			<th>User ID</th>
+			<th>Start Date</th>
+			<th>Start Time</th>
+			<th>End Date</th>
+			<th>End Time</th>
+			</tr>
+	<br />
+		{% for drq in drqs %}
+		<tr>
+			<td>{{drq.roomnum}}</td>
+			<td>{{drq.userid}}</td>
+			<td>{{drq.startdate}}</td>
+			<td>{{drq.starttime}}</td>
+			<td>{{drq.enddate}}</td>
+			<td>{{drq.endtime}}</td>
+		<tr>
+		{% endfor %}
+		</table>
+		{% endif %}
+	
 
 </body>
 </html>

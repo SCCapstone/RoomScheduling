@@ -242,9 +242,12 @@ class AppReqHandler(BaseHandler):
   def post(self):
     arqs = self.request.get_all("approve")
     drqs = self.request.get_all("deny")
+    parqs = []
+    pdrqs = []
     for rq in arqs:
       if rq in drqs: drqs.remove(rq)
       rq = db.get(rq)
+      parqs.append(rq)
       accepted = RoomSchedule(roomnum=rq.roomnum, userid=rq.userid,role=rq.role,
                               startdate=rq.startdate,enddate=rq.enddate,
                               starttime=rq.starttime,endtime=rq.endtime,
@@ -261,6 +264,7 @@ class AppReqHandler(BaseHandler):
       
     for rq in drqs:
       rq = db.get(rq)
+      pdrqs.append(rq)
       sender_address = "Room Scheduling Notification <notification@roomscheduler490.appspotmail.com>"
       subject = "Your request has been denied"
       body = """
@@ -269,7 +273,14 @@ class AppReqHandler(BaseHandler):
       user_address = rq.useremail
       mail.send_mail(sender_address, user_address, subject, body)
       rq.delete()
-    self.redirect("/roomlist")
+
+    template_args = {
+      'user': users.get_current_user(),
+      'arqs': parqs,
+      'drqs': pdrqs
+      }
+    self.render_template("adminsuccess.html", **template_args)
+    
     
 class RoomSuccessHandler(BaseHandler):  
   def get(self):
