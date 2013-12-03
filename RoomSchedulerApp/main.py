@@ -172,8 +172,7 @@ class MailHandler(BaseHandler):
     fromaddr = self.request.get('email') #has to be a google email
     subject = self.request.get('subject')
     msg = self.request.get('message')
-    toaddr = ''
-    #correct so user sends to google mail address
+    toaddr = "Room Scheduling Notification <notification@roomscheduler490.appspotmail.com>"
     mail.send_mail(toaddr, fromaddr, subject, msg)
     self.response.write('Sent Message')
     
