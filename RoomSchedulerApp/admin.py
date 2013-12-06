@@ -45,3 +45,22 @@ class AppReqHandler(BaseHandler):
       user_address = rq.useremail
       mail.send_mail(sender_address, user_address, subject, body)
       rq.delete()
+
+    for rq in drqs:
+      rq = db.get(rq)
+      pdrqs.append(rq)
+      sender_address = "Room Scheduling Notification <notification@roomscheduler490.appspotmail.com>"
+      subject = "Your request has been denied"
+      body = """
+      Your request of room %s has been denied.
+      """ % rq.roomnum
+      user_address = rq.useremail
+      mail.send_mail(sender_address, user_address, subject, body)
+      rq.delete()
+
+    template_args = {
+      'user': users.get_current_user(),
+      'arqs': parqs,
+      'drqs': pdrqs
+    } 
+	self.render_template("adminsuccess.html", **template_args)
