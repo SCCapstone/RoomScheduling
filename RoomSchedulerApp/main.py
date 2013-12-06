@@ -28,49 +28,8 @@ from google.appengine.api import mail
 from aeoid import middleware, users
 from webapp2_extras import jinja2
 
+from models import *
 
-class LoginRecord(db.Model):
-  user = users.UserProperty(auto_current_user_add=True, required=True)
-  timestamp = db.DateTimeProperty(auto_now_add=True)
-  
-class RoomSchedule(db.Model):
-  roomnum = db.StringProperty(required=True)
-#   userid = users.UserProperty(required=True)
-  userid = db.StringProperty(required=True)
-  role = db.StringProperty(required=True, choices=set(["student","faculty","admin"]))
-  startdate = db.DateProperty(required=True)
-  enddate = db.DateProperty(required=True)
-  starttime = db.TimeProperty(required=True)
-  endtime = db.TimeProperty(required=True)
-  reserved = db.BooleanProperty(indexed=False)
-
-class ScheduleRequest(db.Model):
-  roomnum = db.StringProperty(required=True)
-  userid = db.StringProperty(required=True)
-  useremail = db.StringProperty(required=True)
-  role = db.StringProperty(required=True, choices=set(["student","faculty","admin"]))
-  startdate = db.DateProperty(required=True)
-  enddate = db.DateProperty(required=True)
-  starttime = db.TimeProperty(required=True)
-  endtime = db.TimeProperty(required=True)
-  reserved = db.BooleanProperty(indexed=False)
-  
-class EquipmentUsage(db.Model):
-  userid = db.StringProperty(required=True)
-  equipment = db.StringProperty()
-  iclickeramt = db.StringProperty()
-  laptopsel = db.StringProperty() 
-
-class RoomInfo(db.Model):
-  roomnum = db.StringProperty(required=True)
- 
-class EquipmentInfo(db.Model):
-  equipmenttype = db.StringProperty(required=True)
-
-class AdminName(db.Model):
-  email = db.StringProperty(required=True)
-  
-  
 class BaseHandler(webapp2.RequestHandler):
   def render_template(self, filename, **template_args):
     self.response.write(self.jinja2.render_template(filename, **template_args))
@@ -78,6 +37,9 @@ class BaseHandler(webapp2.RequestHandler):
   def jinja2(self):
     return jinja2.get_jinja2(app=self.app)
   
+from equip import *
+from admin import *
+from rooms import *
 
 class LoginHandler(BaseHandler):
   def get(self):
@@ -113,52 +75,6 @@ class MainHandler(BaseHandler):
     }
     self.render_template("index.html", **template_args)
     
-class RoomHandler(BaseHandler):
-  def get(self):
-    user = users.get_current_user()
-    if not user:
-      self.redirect("/login")
-    else:
-      nums = RoomInfo.all().order("roomnum")
-      template_args = {
-        'logout_url': users.create_logout_url('/'),
-        'user': user,
-        'nums': nums
-      }
-      self.render_template("rooms.html", **template_args)
-
-class SelectionHandler(BaseHandler):
-  def post(self):
-    user = users.get_current_user().nickname()
-    try:
-      sdate = self.request.get('sdate')
-      edate = self.request.get('edate')
-      rnum = self.request.get('roomtoselect')
-      stime = self.request.get('stime')
-      etime = self.request.get('etime')
-      mystarttimet = datetime.datetime.strptime(stime,'%I:%M %p').timetuple()
-      myendtimet = datetime.datetime.strptime(etime,'%I:%M %p').timetuple()
-      timestamp = datetime.datetime.now()
-      rss = ScheduleRequest(roomnum=rnum,userid=user,useremail=users.get_current_user().email(),role="admin",
-      startdate = datetime.datetime.strptime(sdate.strip(" "), '%d-%m-%Y').date(),
-      enddate = datetime.datetime.strptime(edate.strip(" "), '%d-%m-%Y').date(),
-      starttime = datetime.time(mystarttimet[3],mystarttimet[4]), 
-      endtime = datetime.time(myendtimet[3],myendtimet[4]), reserved=True)
-      rss.put()
-    except ValueError:
-      self.redirect("/roomfailure")
-    else:
-      template_args = {
-        'user': user,
-        'roomnum': rnum,
-        'sdate': sdate,
-        'edate': edate,
-        'stime': stime,
-        'etime': etime,
-        'timestamp': timestamp,
-      }
-      self.render_template("roomsuccess.html", **template_args)
-
 class HelpHandler(BaseHandler):
   def get(self):
     user = users.get_current_user()
@@ -176,152 +92,6 @@ class MailHandler(BaseHandler):
     mail.send_mail(fromaddr, toaddr, subject, msg)
     self.response.write('Sent Message')
     
-class EquipHandler(BaseHandler):
-  def get(self):
-    user = users.get_current_user()
-    if not user:
-      self.redirect("/login")
-    else:
-      types = EquipmentInfo.all().order("equipmenttype")	
-      template_args = {
-        'logout_url': users.create_logout_url('/'),
-        'user': user,
-	'etypes': types
-      }
-      self.render_template("equipment.html", **template_args)
-      
-class EquipSubmitHandler(BaseHandler):
-  def post(self):
-    user = users.get_current_user().nickname()
-    equip = self.request.get('equiptoselect')
-    iclick = self.request.get('iclickamt')
-    laptop = self.request.get('laptoselect')
-    timestamp = datetime.datetime.now()
-    eus = EquipmentUsage(userid=user, equipment=equip, iclickeramt=iclick, laptopsel=laptop)
-    eus.put()
-    
-    template_args = {
-      'user': user,
-      'equipment': equip,
-      'iclicker': iclick,
-      'laptops': laptop,
-      'timestamp': timestamp,
-    }
-    self.render_template("equipsuccess.html", **template_args)
-
-class RoomListHandler(BaseHandler):
-  def get(self):
-    user = users.get_current_user()
-    if not user:
-      self.redirect("/login")
-    else:
-      rms = RoomSchedule.all()
-      template_args = {
-	'logout_url': users.create_logout_url('/'),
-        'user': user,
-        'rms': rms
-      }
-      self.render_template("roomlist.html", **template_args)
-
-class AdminListHandler(BaseHandler):
-  def get(self):
-    user = users.get_current_user()
-    if not user:
-      self.redirect("/login")
-    elif not user.isadmin():
-      self.redirect("/")
-    else:
-      rqs = ScheduleRequest.all()
-      template_args ={
-        'user': user,
-        'rqs': rqs,  
-      }
-      self.render_template("adminlist.html", **template_args)
-
-class AppReqHandler(BaseHandler):   
-  def post(self):
-    arqs = self.request.get_all("approve")
-    drqs = self.request.get_all("deny")
-    parqs = []
-    pdrqs = []
-    for rq in arqs:
-      if rq in drqs: drqs.remove(rq)
-      rq = db.get(rq)
-      parqs.append(rq)
-      accepted = RoomSchedule(roomnum=rq.roomnum, userid=rq.userid,role=rq.role,
-                              startdate=rq.startdate,enddate=rq.enddate,
-                              starttime=rq.starttime,endtime=rq.endtime,
-                              reserved=True)
-      accepted.put()
-      sender_address = "Room Scheduling Notification <notification@roomscheduler490.appspotmail.com>"
-      subject = "Your request has been approved"
-      body = """
-      Your request of room %s has been approved.
-      """ % rq.roomnum
-      user_address = rq.useremail
-      mail.send_mail(sender_address, user_address, subject, body)
-      rq.delete()
-      
-    for rq in drqs:
-      rq = db.get(rq)
-      pdrqs.append(rq)
-      sender_address = "Room Scheduling Notification <notification@roomscheduler490.appspotmail.com>"
-      subject = "Your request has been denied"
-      body = """
-      Your request of room %s has been denied.
-      """ % rq.roomnum
-      user_address = rq.useremail
-      mail.send_mail(sender_address, user_address, subject, body)
-      rq.delete()
-
-    template_args = {
-      'user': users.get_current_user(),
-      'arqs': parqs,
-      'drqs': pdrqs
-      }
-    self.render_template("adminsuccess.html", **template_args)
-    
-    
-class RoomSuccessHandler(BaseHandler):  
-  def get(self):
-    user = users.get_current_user()
-    timestamp = datetime.datetime.now()
-    template_args = {
-        'user': user,
-        'timestamp': timestamp,
-    }
-    self.render_template("roomsuccess.html", **template_args)
-    
-class RoomFailureHandler(BaseHandler):
-  def get(self):
-    user = users.get_current_user()
-    timestamp = datetime.datetime.now()
-    template_args = {
-        'user': user,
-        'timestamp': timestamp,
-    }
-    self.render_template("roomfailure.html", **template_args)
-    
-class EquipSuccessHandler(BaseHandler):
-  def get(self):
-    user = users.get_current_user()
-    timestamp = datetime.datetime.now()
-    
-    template_args = {
-        'user': user,
-    }
-    self.render_template("equipsuccess.html", **template_args)
-
-class EquipFailureHandler(BaseHandler):  
-  def get(self):
-    user = users.get_current_user()
-    timestamp = datetime.datetime.now()
-    
-    template_args = {
-        'user': user,
-    }
-    self.render_template("equipfailure.html", **template_args)
-
 application = webapp2.WSGIApplication([
     ('/', MainHandler),
     ('/login', LoginHandler),
