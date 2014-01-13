@@ -63,4 +63,4 @@ class AppReqHandler(BaseHandler):
       'arqs': parqs,
       'drqs': pdrqs
     } 
-	self.render_template("adminsuccess.html", **template_args)
+    self.render_template("adminsuccess.html", **template_args)
