@@ -24,8 +24,8 @@ import time
 from google.appengine.ext import db
 import webapp2
 from google.appengine.ext.webapp import util
-from google.appengine.api import mail
-from aeoid import middleware, users
+from google.appengine.api import mail, users
+#from aeoid import middleware, users
 from webapp2_extras import jinja2
 
 from models import *
@@ -41,37 +41,22 @@ from equip import *
 from admin import *
 from rooms import *
 
-class LoginHandler(BaseHandler):
-  def get(self):
-    if users.get_current_user():
-      login = LoginRecord()
-      logging.warn(login.user)
-      login.put()
-    self.redirect('/')
-
-
-class AppsFederationHandler(BaseHandler):
-  """Handles openid login for federated Google Apps Marketplace apps."""
-  def get(self):
-    domain = self.request.get("domain")
-    if not domain:
-      self.redirect("/login")
-    else:
-      openid_url = "https://www.google.com/accounts/o8/site-xrds?hd=" + domain
-      self.redirect("%s?openid_url=%s" %
-                    (users.OPENID_LOGIN_PATH, urllib.quote(openid_url)))
 
 
 class MainHandler(BaseHandler):
   def get(self):
     user = users.get_current_user()
-    logins = LoginRecord.all().order('-timestamp').fetch(20)
-    logging.warn([x.user for x in logins])
+    if user:
+      q = db.GqlQuery("SELECT * FROM UserInfo WHERE userid = :1", user.user_id())
+      if not q.get():
+        uinfo = UserInfo(userid=user.user_id(),email=user.email(), nickname=user.nickname(), role="admin")
+        uinfo.put()
+    uisAdmin = False if not user else UserInfo.isAdmin(user.user_id())
     template_args = {
-      'login_url': users.create_login_url('/login'),
+      'login_url': users.create_login_url('/'),
       'logout_url': users.create_logout_url('/'),
       'user': user,
-      'logins': logins
+      'isadmin': uisAdmin,
     }
     self.render_template("index.html", **template_args)
     
@@ -94,8 +79,6 @@ class MailHandler(BaseHandler):
     
 application = webapp2.WSGIApplication([
     ('/', MainHandler),
-    ('/login', LoginHandler),
-    ('/apps_login', AppsFederationHandler),
     ('/rooms', RoomHandler),
     ('/rsubmit', SelectionHandler),
     ('/help', HelpHandler),
@@ -110,7 +93,6 @@ application = webapp2.WSGIApplication([
     ('/adminlist', AdminListHandler),
     ('/appreq', AppReqHandler),
 ], debug=True)
-application = middleware.AeoidMiddleware(application)
 
 def main():
   util.run_wsgi_app(application)

@@ -1,6 +1,6 @@
 from google.appengine.ext import db
 import webapp2
-from aeoid import users
+from google.appengine.api import users
 
 from main import BaseHandler
 from models import *

@@ -1,7 +1,6 @@
 from google.appengine.ext import db
 import webapp2
-from aeoid import users
-
+from google.appengine.api import users, mail
 
 from main import BaseHandler
 from models import *
@@ -12,7 +11,7 @@ class AdminListHandler(BaseHandler):
     user = users.get_current_user()
     if not user:
       self.redirect("/login")
-    elif not user.isadmin():
+    elif not UserInfo.isAdmin(user.user_id()):
       self.redirect("/")
     else:
       rqs = ScheduleRequest.all()

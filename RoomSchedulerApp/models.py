@@ -1,10 +1,21 @@
 from google.appengine.ext import db
-from aeoid import users
+from google.appengine.api import users
 
-class LoginRecord(db.Model):
-  user = users.UserProperty(auto_current_user_add=True, required=True)
-  timestamp = db.DateTimeProperty(auto_now_add=True)
+class UserInfo(db.Model):
+  userid = db.StringProperty()
+  email = db.StringProperty()
+  nickname = db.StringProperty()
+  role = db.StringProperty(required=True, choices=set(["student","faculty","admin"]))
   
+  @staticmethod
+  def isAdmin(userid):
+    q = db.GqlQuery("SELECT * FROM UserInfo WHERE userid = :1", userid)
+    if q.get():
+      return q.get().role == 'admin'
+    else:
+      return False
+      
+ 
 class RoomSchedule(db.Model):
   roomnum = db.StringProperty(required=True)
 #   userid = users.UserProperty(required=True)
