@@ -2,6 +2,7 @@ from google.appengine.ext import db
 import webapp2
 from google.appengine.api import users
 import datetime
+import re
 
 
 from main import BaseHandler
@@ -24,6 +25,17 @@ class RoomHandler(BaseHandler):
   def post(self):
     user = users.get_current_user().nickname()
     try:
+      timestamp = datetime.datetime.now()
+      uid = self.request.get('name')
+      uemail = self.request.get('email')
+      if not (re.match(r"[^@]+@[^@]+\.[^@]+", uemail) and uemail.split('@')[1].endswith('sc.edu')):
+        template_args = {
+          'reason': "Valid sc.edu email address needed.",
+          'timestamp': timestamp,
+          'user': user,
+        }
+        self.render_template("roomfailure.html", **template_args)
+        return
       sdate = self.request.get('sdate')
       edate = self.request.get('edate')
       rnum = self.request.get('roomtoselect')
@@ -31,15 +43,19 @@ class RoomHandler(BaseHandler):
       etime = self.request.get('etime')
       mystarttimet = datetime.datetime.strptime(stime,'%I:%M %p').timetuple()
       myendtimet = datetime.datetime.strptime(etime,'%I:%M %p').timetuple()
-      timestamp = datetime.datetime.now()
-      rss = ScheduleRequest(roomnum=rnum,userid=user,useremail=users.get_current_user().email(),role="admin",
+      rss = ScheduleRequest(roomnum=rnum,userid=uid,useremail=uemail,role="admin",
       startdate = datetime.datetime.strptime(sdate.strip(" "), '%d-%m-%Y').date(),
       enddate = datetime.datetime.strptime(edate.strip(" "), '%d-%m-%Y').date(),
       starttime = datetime.time(mystarttimet[3],mystarttimet[4]), 
       endtime = datetime.time(myendtimet[3],myendtimet[4]), reserved=True)
       rss.put()
     except ValueError:
-      self.redirect("/roomfailure")
+      template_args = {
+        'reason': "Invalid format given.",
+        'timestamp': timestamp,
+        'user': user,
+      }
+      self.render_template("roomfailure.html", **template_args)
     else:
       template_args = {
         'user': user,
