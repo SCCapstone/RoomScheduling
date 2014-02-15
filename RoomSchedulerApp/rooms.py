@@ -20,8 +20,7 @@ class RoomHandler(BaseHandler):
         'nums': nums
       }
       self.render_template("rooms.html", **template_args)
-
-class SelectionHandler(BaseHandler):
+      
   def post(self):
     user = users.get_current_user().nickname()
     try:
