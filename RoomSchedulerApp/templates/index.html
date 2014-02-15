@@ -43,7 +43,7 @@
 	<div align="center" id="login">  
     	{% if user %}
     	<p>Welcome, {{user.nickname()}}!</p>
-		{% if user.isadmin() %}
+		{% if isadmin %}
 		<p> ADMIN ACCESS</p>
 		<a href="/adminlist">Check Scheduled Rooms</a>
 		{% endif %}
