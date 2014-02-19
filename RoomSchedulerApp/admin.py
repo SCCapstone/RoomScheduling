@@ -21,7 +21,6 @@ class AdminListHandler(BaseHandler):
       }
       self.render_template("adminlist.html", **template_args)
 
-class AppReqHandler(BaseHandler):   
   def post(self):
     arqs = self.request.get_all("approve")
     drqs = self.request.get_all("deny")

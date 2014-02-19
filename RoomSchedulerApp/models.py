@@ -37,6 +37,7 @@ class ScheduleRequest(db.Model):
   starttime = db.TimeProperty(required=True)
   endtime = db.TimeProperty(required=True)
   reserved = db.BooleanProperty(indexed=False)
+  timestamp = db.DateTimeProperty(required=True)
   
 class EquipmentUsage(db.Model):
   userid = db.StringProperty(required=True)

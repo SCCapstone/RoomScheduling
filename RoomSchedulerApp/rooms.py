@@ -11,19 +11,15 @@ from models import *
 class RoomHandler(BaseHandler):
   def get(self):
     user = users.get_current_user()
-    if not user:
-      self.redirect("/login")
-    else:
-      nums = RoomInfo.all().order("roomnum")
-      template_args = {
-        'logout_url': users.create_logout_url('/'),
-        'user': user,
-        'nums': nums
+    nums = RoomInfo.all().order("roomnum")
+    template_args = {
+      'logout_url': users.create_logout_url('/'),
+      'user': user,
+      'nums': nums
       }
-      self.render_template("rooms.html", **template_args)
+    self.render_template("rooms.html", **template_args)
       
   def post(self):
-    user = users.get_current_user().nickname()
     try:
       timestamp = datetime.datetime.now()
       uid = self.request.get('name')
@@ -43,7 +39,7 @@ class RoomHandler(BaseHandler):
       etime = self.request.get('etime')
       mystarttimet = datetime.datetime.strptime(stime,'%I:%M %p').timetuple()
       myendtimet = datetime.datetime.strptime(etime,'%I:%M %p').timetuple()
-      rss = ScheduleRequest(roomnum=rnum,userid=uid,useremail=uemail,role="admin",
+      rss = ScheduleRequest(roomnum=rnum,userid=uid,useremail=uemail,role="admin",timestamp=timestamp,
       startdate = datetime.datetime.strptime(sdate.strip(" "), '%d-%m-%Y').date(),
       enddate = datetime.datetime.strptime(edate.strip(" "), '%d-%m-%Y').date(),
       starttime = datetime.time(mystarttimet[3],mystarttimet[4]), 
@@ -53,12 +49,10 @@ class RoomHandler(BaseHandler):
       template_args = {
         'reason': "Invalid format given.",
         'timestamp': timestamp,
-        'user': user,
       }
       self.render_template("roomfailure.html", **template_args)
     else:
       template_args = {
-        'user': user,
         'roomnum': rnum,
         'sdate': sdate,
         'edate': edate,
@@ -71,33 +65,10 @@ class RoomHandler(BaseHandler):
 class RoomListHandler(BaseHandler):
   def get(self):
     user = users.get_current_user()
-    if not user:
-      self.redirect("/login")
-    else:
-      rms = RoomSchedule.all()
-      template_args = {
-	'logout_url': users.create_logout_url('/'),
-        'user': user,
-        'rms': rms
-      }
-      self.render_template("roomlist.html", **template_args)
-
-class RoomSuccessHandler(BaseHandler):  
-  def get(self):
-    user = users.get_current_user()
-    timestamp = datetime.datetime.now()
+    rms = RoomSchedule.all()
     template_args = {
-        'user': user,
-        'timestamp': timestamp,
+      'logout_url': users.create_logout_url('/'),
+      'user': user,
+      'rms': rms
     }
-    self.render_template("roomsuccess.html", **template_args)
-    
-class RoomFailureHandler(BaseHandler):
-  def get(self):
-    user = users.get_current_user()
-    timestamp = datetime.datetime.now()
-    template_args = {
-        'user': user,
-        'timestamp': timestamp,
-    }
-    self.render_template("roomfailure.html", **template_args)
+    self.render_template("roomlist.html", **template_args)

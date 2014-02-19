@@ -45,7 +45,7 @@
     	<p>Welcome, {{user.nickname()}}!</p>
 		{% if isadmin %}
 		<p> ADMIN ACCESS</p>
-		<a href="/adminlist">Check Scheduled Rooms</a>
+		<a href="/admin">Check Scheduled Rooms</a>
 		{% endif %}
   		{% else %}
     	<p>Welcome to the Room Scheduling Site! Please <a href="{{login_url}}">Log In</a></p>

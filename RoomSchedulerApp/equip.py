@@ -8,16 +8,13 @@ from models import *
 class EquipHandler(BaseHandler):
   def get(self):
     user = users.get_current_user()
-    if not user:
-      self.redirect("/login")
-    else:
-      types = EquipmentInfo.all().order("equipmenttype")	
-      template_args = {
-        'logout_url': users.create_logout_url('/'),
-        'user': user,
-	'etypes': types
-      }
-      self.render_template("equipment.html", **template_args)
+    types = EquipmentInfo.all().order("equipmenttype")	
+    template_args = {
+      'logout_url': users.create_logout_url('/'),
+      'user': user,
+      'etypes': types
+    }
+    self.render_template("equipment.html", **template_args)
       
 class EquipSubmitHandler(BaseHandler):
   def post(self):
