@@ -9,30 +9,46 @@
 {% endblock %}
 
 {% block content %}
-    <div align="center" id="wmsg">
-    
-    <p>Please enter the following: </p>
+	<form name="rsubmission" action="/rooms" method="post" class="form-horizontal" role="form">
+  <div class="form-group">
+    <label for="name" class="col-sm-2 control-label" name="name">Name</label>
+    <div class="col-sm-3">
+      <input type="text" class="form-control" id="name" name="name" placeholder="Name">
     </div>
-    <br  />
-    
-    <div id="form" align="center">
-
- 	<form name="rsubmission" action="/rooms" method="post">
-	Name: <input type="text" name="name" id="name" size="30" /> <br />
-	Email address: <input type="text" name="email" id="email" size="30" /> <br />
-	
- 	
- 	Select Room: <select name="roomtoselect" id="roomtoselect" onchange="">
-	      {% for num in nums %}
- 		<option name="roomnum" value="{{num.roomnum}}">{{num.roomnum}}</option>
-	      {% endfor %}
- 	</select>
- 	<br />
- 	Start Date: <input type="text" name="sdate" id="sdate" size="30"><a href="javascript:NewCal('sdate','ddmmyyyy')"><img src="images/cal.gif" width="16" height="16" border="0" alt="Pick a date"></a><br />
-    End Date: <input type="text" name="edate" id="edate" size="30"><a href="javascript:NewCal('edate','ddmmyyyy')"><img src="images/cal.gif" width="16" height="16" border="0" alt="Pick a date"></a><br />
-    <p>Select times per day(s) </p>
-    <div>Start Time: <select name="stime" id="stime">
-    	<option name="time" value="8:00 AM">8:00 AM</option>
+  </div>
+  <div class="form-group">
+    <label for="email" class="col-sm-2 control-label">Email</label>
+    <div class="col-sm-3">
+      <input type="email" class="form-control" id="email" name="email" placeholder="Email">
+    </div>
+  </div>
+  <div class="form-group">
+  <label for="roomtoselect" class="col-sm-2 control-label">Room number</label>
+  <div class="col-sm-3">
+  <select class="form-control" name="roomtoselect" id="roomtoselect">
+  {% for num in nums %}
+  <option name="roomnum" value="{{num.roomnum}}">{{num.roomnum}}</option>
+  {% endfor %}
+  </select>
+  </div>
+  </div>
+  <div class="form-group">
+  <label for="sdate" class="col-sm-2 control-label">Start date</label>
+  <div class="col-sm-3">
+   <input type="text" name="sdate" id="sdate" class="form-control"><a href="javascript:NewCal('sdate','ddmmyyyy')"><img src="images/cal.gif" width="16" height="16" border="0" alt="Pick a date"></a><br />
+  </div>
+  </div>
+  <div class="form-group">
+  <label for="edate" class="col-sm-2 control-label">End date</label>
+  <div class="col-sm-3">
+   <input type="text" name="edate" id="edate" class="form-control"><a href="javascript:NewCal('edate','ddmmyyyy')"><img src="images/cal.gif" width="16" height="16" border="0" alt="Pick a date"></a><br />
+  </div>
+  </div>
+  <div class="form-group">
+  <label for="stime" class="col-sm-2 control-label">Start time</label>
+  <div class="col-sm-3">
+  <select class="form-control" name="stime" id="stime">
+      	<option name="time" value="8:00 AM">8:00 AM</option>
     	<option name="time" value="9:00 AM">9:00 AM</option>
     	<option name="time" value="10:00 AM">10:00 AM</option>
     	<option name="time" value="11:00 AM">11:00 AM</option>
@@ -45,9 +61,14 @@
     	<option name="time" value="6:00 PM">6:00 PM</option>
     	<option name="time" value="7:00 PM">7:00 PM</option>
     	<option name="time" value="8:00 PM">8:00 PM</option>
-    </select><br /></div>
-    <div>End Time: <select name="etime" id="etime">
-    <option name="time" value="8:00 AM">8:00 AM</option>
+  </select>
+  </div>
+  </div>
+  <div class="form-group">
+  <label for="etime" class="col-sm-2 control-label">End time</label>
+  <div class="col-sm-3">
+  <select class="form-control" name="etime" id="etime">
+      	<option name="time" value="8:00 AM">8:00 AM</option>
     	<option name="time" value="9:00 AM">9:00 AM</option>
     	<option name="time" value="10:00 AM">10:00 AM</option>
     	<option name="time" value="11:00 AM">11:00 AM</option>
@@ -60,8 +81,13 @@
     	<option name="time" value="6:00 PM">6:00 PM</option>
     	<option name="time" value="7:00 PM">7:00 PM</option>
     	<option name="time" value="8:00 PM">8:00 PM</option>
-    </select><br /></div>
-    <br />
-    <input type="submit" value="Submit" /> <br />
-    </form>
+  </select>
+  </div>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <button type="submit" class="btn btn-default">Submit</button>
+    </div>
+  </div>
+</form>
 {% endblock %}
