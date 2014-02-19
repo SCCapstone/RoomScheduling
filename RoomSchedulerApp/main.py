@@ -83,10 +83,7 @@ application = webapp2.WSGIApplication([
     ('/help', HelpHandler),
     ('/sendmail', MailHandler),
     ('/equipment', EquipHandler),
-    ('/esubmit', EquipSubmitHandler),
     ('/roomlist', RoomListHandler),
-    ('/equipsuccess', EquipSuccessHandler),
-    ('/equipfailure', EquipFailureHandler),
     ('/admin', AdminListHandler),
     ('/delete', DeletionHandler),
 ], debug=True)

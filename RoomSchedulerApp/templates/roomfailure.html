@@ -1,37 +1,10 @@
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>Submission Failure</title>
-<link rel="stylesheet" href="/css/style.css"/>
+{% extends "base.html" %}
+{% block title %}Submission failure{% endblock %}
+{% block head %}
+	{{ super() }}
+{% endblock %}
 
-</head>
-
-<body>
-
-<div id="container">
-	
-    <div id="banner">  
-        <img src="images/banner6.png" width="960" height="180"/> 
-    </div>
-    
-	<div align="center" id="nav">
-		{% if user %}
-	   <ul id="nav">
-        <li><a href="/">Home</a></li>
-        <li><a href="/equipment">Equipment</a></li>
-        <li><a href="/rooms">Rooms</a></li>
-        <li><a href="/roomlist">Scheduled Rooms</a></li>
-        <li><a style="background-image: none;" href="/help">Help</a></li>
-       </ul>
-		{% else %}
-	   <ul id="nav">
-        <li><a href="/">Home</a></li>
-        <li><a style="background-image: none;" href="/help">Help</a></li>
-       </ul>
-       {% endif %}
-    </div>
-        
-    <br  />
+{% block content %}
 
 	<div align="center" >
 		<p><h1>Failure</h1> </p>
@@ -40,8 +13,4 @@
 		<p> Time Submitted: {{timestamp}} </p>
 	</div>
 
-</div>
-
-</body>
-
-</html>
+{% endblock %}

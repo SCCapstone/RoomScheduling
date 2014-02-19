@@ -30,7 +30,6 @@ class RoomHandler(BaseHandler):
         template_args = {
           'reason': "Valid sc.edu email address needed.",
           'timestamp': timestamp,
-          'user': user,
         }
         self.render_template("roomfailure.html", **template_args)
         return

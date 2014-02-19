@@ -1,39 +1,14 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>Schedule a Room</title>
-<link rel="stylesheet" href="/css/style.css"/>
-<link rel="stylesheet" href="/css/timePicker.css"/>
-<script language="javascript" type="text/javascript" src="static/datetimepicker.js">
-//Date Time Picker script- by TengYong Ng of http://www.rainforestnet.com
-</script>
+{% extends "base.html" %}
+{% block title %}Schedule a room{% endblock %}
+{% block head %}
+	{{ super() }}
+	<link rel="stylesheet" href="/css/timePicker.css"/>
+	<script language="javascript" type="text/javascript" src="static/datetimepicker.js">
+	//Date Time Picker script- by TengYong Ng of http://www.rainforestnet.com
+	</script>
+{% endblock %}
 
-</head>
-
-</head>
-
-<body>
-
-<div id="container">
-	
-    <div id="banner">  
-        <img src="images/banner6.png" width="960" height="180"/> 
-    </div>
-    
-	<div align="center" id="nav">
-	   <ul id= "nav">
-        <li><a href="/">Home</a></li>
-        <li><a href="/equipment">Equipment</a></li>
-        <li><a href="/rooms">Rooms</a></li>
-        <li><a href="/roomlist">Scheduled Rooms</a></li>
-        <li><a href="/help">Help</a></li>
-		<li><a style="background-image: none;"  href="{{logout_url}}">Logout</a></li>
-       </ul>
-    </div>
-    
-    <br  />
-    
+{% block content %}
     <div align="center" id="wmsg">
     
     <p>Please enter the following: </p>
@@ -89,9 +64,4 @@
     <br />
     <input type="submit" value="Submit" /> <br />
     </form>
-    </div>
-    
-</div>
-
-</body>
-</html>
+{% endblock %}

@@ -1,70 +1,23 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>Enter USC Room Scheduling Site</title>
-<link rel="stylesheet" href="/css/style.css"/>
+{% extends "base.html" %}
+{% block title %}USC Room Scheduling{% endblock %}
+{% block head %}
+	{{ super() }}
+{% endblock %}
 
-</head>
-
-<body>
-
-<div id="container">
-	
-    <div id="banner">  
-        <img src="images/banner6.png" width="960" height="180"/> 
-    </div>
-    
-	<div align="center" id="nav">
-		{% if user %}
-	   <ul id="nav">
-        <li><a href="/">Home</a></li>
-        <li><a href="/equipment">Equipment</a></li>
-        <li><a href="/rooms">Rooms</a></li>
-        <li><a href="/roomlist">Scheduled Rooms</a></li>
-<!-- 
-        {% if user.isadmin %}
-        <li><a href="/adminlist">Check Rooms</a></li>
-        {% endif %}
- -->
-        <li><a href="/help">Help</a></li>
-		<li><a style="background-image: none;"  href="{{logout_url}}">Logout</a></li>
-       </ul>
-		{% else %}
-	   <ul id="nav">
-        <li><a href="/">Home</a></li>
-        <li><a href="/help">Help</a></li>
-		<li><a style="background-image: none;" href="{{login_url}}">Login</a></li>
-       </ul>
-       {% endif %}
-    </div>
+{% block content %}
         
     <br  />
 	<div align="center" id="login">  
     	{% if user %}
     	<p>Welcome, {{user.nickname()}}!</p>
+		<a href="{{logout_url}}">Logout</a>
 		{% if isadmin %}
 		<p> ADMIN ACCESS</p>
 		<a href="/admin">Check Scheduled Rooms</a>
 		{% endif %}
-  		{% else %}
-    	<p>Welcome to the Room Scheduling Site! Please <a href="{{login_url}}">Log In</a></p>
+		{% else %}
+		<a href="{{login_url}}">Admin login</a>
 		{% endif %}
 	</div>
     
-	<br  />
-    
-    <!-- 
-<div align="center">
-    <table>
-    <tr><th>Nickname</th><th>URL</th><th>When</th></tr>
-    {% for login in logins %}
-      <tr><td>{{login.user.nickname}}</td><td>{{login.user.user_id}}</td><td>{{login.timestamp}}</td></tr>
-    {% endfor %}
-  </table>
-  </div>
- -->
-</div>
-
-</body>
-</html>
+{% endblock %}

@@ -2,21 +2,19 @@ from google.appengine.ext import db
 import webapp2
 from google.appengine.api import users
 
+import datetime
+
 from main import BaseHandler
 from models import *
 
 class EquipHandler(BaseHandler):
   def get(self):
-    user = users.get_current_user()
     types = EquipmentInfo.all().order("equipmenttype")	
     template_args = {
-      'logout_url': users.create_logout_url('/'),
-      'user': user,
       'etypes': types
     }
     self.render_template("equipment.html", **template_args)
-      
-class EquipSubmitHandler(BaseHandler):
+
   def post(self):
     user = users.get_current_user().nickname()
     equip = self.request.get('equiptoselect')
@@ -27,14 +25,13 @@ class EquipSubmitHandler(BaseHandler):
     eus.put()
     
     template_args = {
-      'user': user,
       'equipment': equip,
       'iclicker': iclick,
       'laptops': laptop,
       'timestamp': timestamp,
     }
     self.render_template("equipsuccess.html", **template_args)
-
+      
 class EquipSuccessHandler(BaseHandler):
   def get(self):
     user = users.get_current_user()
