@@ -88,6 +88,7 @@ application = webapp2.WSGIApplication([
     ('/equipsuccess', EquipSuccessHandler),
     ('/equipfailure', EquipFailureHandler),
     ('/admin', AdminListHandler),
+    ('/delete', DeletionHandler),
 ], debug=True)
 
 def main():

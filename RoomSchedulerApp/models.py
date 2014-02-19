@@ -18,7 +18,6 @@ class UserInfo(db.Model):
  
 class RoomSchedule(db.Model):
   roomnum = db.StringProperty(required=True)
-#   userid = users.UserProperty(required=True)
   userid = db.StringProperty(required=True)
   role = db.StringProperty(required=True, choices=set(["student","faculty","admin"]))
   startdate = db.DateProperty(required=True)
@@ -38,6 +37,7 @@ class ScheduleRequest(db.Model):
   endtime = db.TimeProperty(required=True)
   reserved = db.BooleanProperty(indexed=False)
   timestamp = db.DateTimeProperty(required=True)
+  deletekey = db.StringProperty(required=True)
   
 class EquipmentUsage(db.Model):
   userid = db.StringProperty(required=True)

@@ -3,6 +3,8 @@ import webapp2
 from google.appengine.api import users
 import datetime
 import re
+from hashlib import sha1
+from random import random
 
 
 from main import BaseHandler
@@ -40,6 +42,7 @@ class RoomHandler(BaseHandler):
       mystarttimet = datetime.datetime.strptime(stime,'%I:%M %p').timetuple()
       myendtimet = datetime.datetime.strptime(etime,'%I:%M %p').timetuple()
       rss = ScheduleRequest(roomnum=rnum,userid=uid,useremail=uemail,role="admin",timestamp=timestamp,
+      deletekey = sha1(str(random())).hexdigest(),
       startdate = datetime.datetime.strptime(sdate.strip(" "), '%d-%m-%Y').date(),
       enddate = datetime.datetime.strptime(edate.strip(" "), '%d-%m-%Y').date(),
       starttime = datetime.time(mystarttimet[3],mystarttimet[4]), 
@@ -72,3 +75,22 @@ class RoomListHandler(BaseHandler):
       'rms': rms
     }
     self.render_template("roomlist.html", **template_args)
+
+class DeletionHandler(BaseHandler):
+  def get(self):
+    deletionkey = self.request.get("dkey")
+    q = db.GqlQuery("SELECT * FROM ScheduleRequest WHERE deletekey = :1", deletionkey)
+    deleterecord = q.get()
+    if deleterecord is None:
+      q = db.GqlQuery("SELECT * FROM RoomSchedule WHERE deletekey = :1", deletionkey)
+      deleterecord = q.get()
+      if deleterecord is None:
+        self.response.out.write("Invalid deletion URL.")
+      else:
+        deleterecord.delete()
+        self.response.out.write("Scheduled room reservation deleted.")
+    else:
+      deleterecord.delete()
+      self.response.out.write("Room reservation request deleted.")
+      
+        
