@@ -1,6 +1,6 @@
 from google.appengine.ext import db
 import webapp2
-from google.appengine.api import users
+from google.appengine.api import users, mail
 import datetime
 import re
 from hashlib import sha1
@@ -39,15 +39,24 @@ class RoomHandler(BaseHandler):
       rnum = self.request.get('roomtoselect')
       stime = self.request.get('stime')
       etime = self.request.get('etime')
+      dkey = sha1(str(random())).hexdigest()
       mystarttimet = datetime.datetime.strptime(stime,'%I:%M %p').timetuple()
       myendtimet = datetime.datetime.strptime(etime,'%I:%M %p').timetuple()
       rss = ScheduleRequest(roomnum=rnum,userid=uid,useremail=uemail,role="admin",timestamp=timestamp,
-      deletekey = sha1(str(random())).hexdigest(),
+      deletekey=dkey,
       startdate = datetime.datetime.strptime(sdate.strip(" "), '%d-%m-%Y').date(),
       enddate = datetime.datetime.strptime(edate.strip(" "), '%d-%m-%Y').date(),
       starttime = datetime.time(mystarttimet[3],mystarttimet[4]), 
       endtime = datetime.time(myendtimet[3],myendtimet[4]), reserved=True)
       rss.put()
+      sender_address = "Room Scheduling Notification <notification@roomscheduler490.appspotmail.com>"
+      subject = "Schedule Request deletion URL"
+      body = """
+      Your request of room %s has been submitted. If you need to delete this request, use the link below.
+      http://roomscheduler490.appspot.com/delete?dkey=%s
+      """ % (rnum, dkey)
+      user_address = uemail
+      mail.send_mail(sender_address, user_address, subject, body)
     except ValueError:
       template_args = {
         'reason': "Invalid format given.",
