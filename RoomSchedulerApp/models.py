@@ -25,6 +25,7 @@ class RoomSchedule(db.Model):
   starttime = db.TimeProperty(required=True)
   endtime = db.TimeProperty(required=True)
   reserved = db.BooleanProperty(indexed=False)
+  deletekey = db.StringProperty(required=True)
 
 class ScheduleRequest(db.Model):
   roomnum = db.StringProperty(required=True)

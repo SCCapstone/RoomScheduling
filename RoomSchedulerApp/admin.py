@@ -33,7 +33,7 @@ class AdminListHandler(BaseHandler):
       accepted = RoomSchedule(roomnum=rq.roomnum, userid=rq.userid,role=rq.role,
                               startdate=rq.startdate,enddate=rq.enddate,
                               starttime=rq.starttime,endtime=rq.endtime,
-                              reserved=True)
+                              deletekey=rq.deletekey, reserved=True)
       accepted.put()
       sender_address = "Room Scheduling Notification <notification@roomscheduler490.appspotmail.com>"
       subject = "Your request has been approved"
