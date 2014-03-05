@@ -5,16 +5,17 @@
 {% endblock %}
 
 {% block content %}
+<div class="col-md-9">
 	<form name="request" action="/admin" method="post">
-		<div align="center">
 	{% if rqs.count() > 0 %}
-	<table>
+	<table class="table">
 
 		<tr>
 			<th>Approve</th>
 			<th>Deny</th>
 			<th>Room Number</th>
 			<th>User ID</th>
+			<th>Timestamp</th>
 			<th>Start Date</th>
 			<th>Start Time</th>
 			<th>End Date</th>
@@ -27,6 +28,7 @@
 			<td><input type="checkbox" name="deny" value="{{rq.key()}}"></td>
 			<td>{{rq.roomnum}}</td>
 			<td>{{rq.userid}}</td>
+			<td>{{rq.timestamp}}</td>
 			<td>{{rq.startdate}}</td>
 			<td>{{rq.starttime}}</td>
 			<td>{{rq.enddate}}</td>
@@ -36,5 +38,5 @@
 	</table>
 	<input type="submit" value="Submit">
 	{% endif %}
-	</div>
+</div>
  {% endblock %}

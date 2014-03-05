@@ -5,8 +5,10 @@
 {% endblock %}
 
 {% block content %}
+<div class="col-md-9">
   <table class="table">
   {% for num in nums %}
   <tr><td><a href="/rooms/{{num.roomnum}}">{{num.roomnum}}</a><tr></td>
   {% endfor %}
+</div>
 {% endblock %}

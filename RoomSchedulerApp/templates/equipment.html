@@ -5,23 +5,28 @@
 {% endblock %}
 
 {% block content %}
-    <div align="center" id="wmsg">
-    
-    <p>Please select equipment: </p>
+<div class="col-md-9">
+    <form name="esubmission" action="/equipment" method="post" class="form-horizontal" role="form">
+	<div class="form-group">
+  <label for="equipmenttoselect" class="col-sm-2 control-label">Select equipment</label>
+  <div class="col-sm-3">
+  <select class="form-control" name="equipmenttoselect" id="equipmenttoselect">
+   {% for etype in etypes %}
+    <option name="equip" value="{{etype.equipmenttype}}">{{etype.equipmenttype}}</option>
+   {% endfor %}
+  </select>
+  </div>
+  </div>
+    <div class="form-group">
+    <label for="name" class="col-sm-2 control-label" name="iclickamt">iClickers</label>
+    <div class="col-sm-3">
+      <input type="text" class="form-control" id="iclickamt" name="iclickamt" value="0">
     </div>
-    <br  />
-    
-    <div id="form" align="center">
-    <form name="esubmission" action="/equipment" method="post" >
-	Select Equipment: <select name ="equipmenttoselect" id="equipmenttoselect" onchange="">
-	      {% for etype in etypes %}
-		<option name="equip" value="{{etype.equipmenttype}}">{{etype.equipmenttype}}</option>
-	      {% endfor %}
- 	</select>
-     <br  />
-     iClickers: <input type="text" name="iclickamt" id="iclickamt" value="0" >
-     <br  />
-     Laptops: <select name="laptoselect" id="laptoselect" onchange="">
+  </div>
+  <div class="form-group">
+  <label for="laptopselect" class="col-sm-2 control-label">Laptops</label>
+  <div class="col-sm-3">
+  <select class="form-control" name="laptopselect" id="laptopselect">
         <option name="equip" value="None">None</option>
  		<option name="equip" value="A">A</option>
  		<option name="equip" value="B">B</option>
@@ -37,10 +42,14 @@
  		<option name="equip" value="L">L</option>
  		<option name="equip" value="M">M</option>
  	</select>
-	<br  />
-    <input type="submit" value="Submit"  />
-     
-    </form>
+	</div>
+	</div>
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <button type="submit" class="btn btn-default">Submit</button>
     </div>
+  </div>
+</form>
+</div>
     
 {% endblock %}
