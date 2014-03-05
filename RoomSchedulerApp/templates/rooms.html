@@ -6,9 +6,16 @@
 
 {% block content %}
 <div class="col-md-9">
-  <table class="table">
-  {% for num in nums %}
-  <tr><td><a href="/rooms/{{num.roomnum}}">{{num.roomnum}}</a><tr></td>
-  {% endfor %}
+<img id="map" src="/images/map.png" border="0" width="628" height="360" usemap="#image-maps-2014-03-05-110954" alt="" />
+<map name="image-maps-2014-03-05-110954" id="ImageMapsCom-image-maps-2014-03-05-110954">
+<area  shape="rect" coords="7,0,154,173" alt="" title="" target="_self" href="/rooms/029"     />
+<area  shape="rect" coords="157,0,304,173" alt="" title="" target="_self" href="/rooms/030"     />
+<area  shape="rect" coords="316,0,477,171" alt="" title="" target="_self" href="/rooms/117"     />
+<area  shape="rect" coords="482,4,624,173" alt="" title="" target="_self" href="/rooms/125"     />
+<area  shape="rect" coords="8,179,150,348" alt="" title="" target="_self" href="/rooms/272"     />
+<area  shape="rect" coords="158,178,307,350" alt="" title="" target="_self" href="/rooms/274-0"     />
+<area  shape="rect" coords="313,176,477,350" alt="" title="" target="_self" href="/rooms/274-D"     />
+<area  shape="rect" coords="483,181,622,353" alt="" title="" target="_self" href="/rooms/274-M"     />
+</map>
 </div>
 {% endblock %}
