@@ -2,92 +2,11 @@
 {% block title %}Schedule a room{% endblock %}
 {% block head %}
 	{{ super() }}
-	<link rel="stylesheet" href="/css/timePicker.css"/>
-	<script language="javascript" type="text/javascript" src="static/datetimepicker.js">
-	//Date Time Picker script- by TengYong Ng of http://www.rainforestnet.com
-	</script>
 {% endblock %}
 
 {% block content %}
-	<form name="rsubmission" action="/rooms" method="post" class="form-horizontal" role="form">
-  <div class="form-group">
-    <label for="name" class="col-sm-2 control-label" name="name">Name</label>
-    <div class="col-sm-3">
-      <input type="text" class="form-control" id="name" name="name" placeholder="Name">
-    </div>
-  </div>
-  <div class="form-group">
-    <label for="email" class="col-sm-2 control-label">Email</label>
-    <div class="col-sm-3">
-      <input type="email" class="form-control" id="email" name="email" placeholder="Email">
-    </div>
-  </div>
-  <div class="form-group">
-  <label for="roomtoselect" class="col-sm-2 control-label">Room number</label>
-  <div class="col-sm-3">
-  <select class="form-control" name="roomtoselect" id="roomtoselect">
+  <table class="table">
   {% for num in nums %}
-  <option name="roomnum" value="{{num.roomnum}}">{{num.roomnum}}</option>
+  <tr><td><a href="/rooms/{{num.roomnum}}">{{num.roomnum}}</a><tr></td>
   {% endfor %}
-  </select>
-  </div>
-  </div>
-  <div class="form-group">
-  <label for="sdate" class="col-sm-2 control-label">Start date</label>
-  <div class="col-sm-3">
-   <input type="text" name="sdate" id="sdate" class="form-control"><a href="javascript:NewCal('sdate','ddmmyyyy')"><img src="images/cal.gif" width="16" height="16" border="0" alt="Pick a date"></a><br />
-  </div>
-  </div>
-  <div class="form-group">
-  <label for="edate" class="col-sm-2 control-label">End date</label>
-  <div class="col-sm-3">
-   <input type="text" name="edate" id="edate" class="form-control"><a href="javascript:NewCal('edate','ddmmyyyy')"><img src="images/cal.gif" width="16" height="16" border="0" alt="Pick a date"></a><br />
-  </div>
-  </div>
-  <div class="form-group">
-  <label for="stime" class="col-sm-2 control-label">Start time</label>
-  <div class="col-sm-3">
-  <select class="form-control" name="stime" id="stime">
-      	<option name="time" value="8:00 AM">8:00 AM</option>
-    	<option name="time" value="9:00 AM">9:00 AM</option>
-    	<option name="time" value="10:00 AM">10:00 AM</option>
-    	<option name="time" value="11:00 AM">11:00 AM</option>
-    	<option name="time" value="12:00 PM">12:00 PM</option>
-    	<option name="time" value="1:00 PM">1:00 PM</option>
-    	<option name="time" value="2:00 PM">2:00 PM</option>
-    	<option name="time" value="3:00 PM">3:00 PM</option>
-    	<option name="time" value="4:00 PM">4:00 PM</option>
-    	<option name="time" value="5:00 PM">5:00 PM</option>
-    	<option name="time" value="6:00 PM">6:00 PM</option>
-    	<option name="time" value="7:00 PM">7:00 PM</option>
-    	<option name="time" value="8:00 PM">8:00 PM</option>
-  </select>
-  </div>
-  </div>
-  <div class="form-group">
-  <label for="etime" class="col-sm-2 control-label">End time</label>
-  <div class="col-sm-3">
-  <select class="form-control" name="etime" id="etime">
-      	<option name="time" value="8:00 AM">8:00 AM</option>
-    	<option name="time" value="9:00 AM">9:00 AM</option>
-    	<option name="time" value="10:00 AM">10:00 AM</option>
-    	<option name="time" value="11:00 AM">11:00 AM</option>
-    	<option name="time" value="12:00 PM">12:00 PM</option>
-    	<option name="time" value="1:00 PM">1:00 PM</option>
-    	<option name="time" value="2:00 PM">2:00 PM</option>
-    	<option name="time" value="3:00 PM">3:00 PM</option>
-    	<option name="time" value="4:00 PM">4:00 PM</option>
-    	<option name="time" value="5:00 PM">5:00 PM</option>
-    	<option name="time" value="6:00 PM">6:00 PM</option>
-    	<option name="time" value="7:00 PM">7:00 PM</option>
-    	<option name="time" value="8:00 PM">8:00 PM</option>
-  </select>
-  </div>
-  </div>
-  <div class="form-group">
-    <div class="col-sm-offset-2 col-sm-10">
-      <button type="submit" class="btn btn-default">Submit</button>
-    </div>
-  </div>
-</form>
 {% endblock %}

@@ -78,14 +78,15 @@ class MailHandler(BaseHandler):
     self.response.write('Sent Message')
     
 application = webapp2.WSGIApplication([
-    ('/', MainHandler),
-    ('/rooms', RoomHandler),
-    ('/help', HelpHandler),
-    ('/sendmail', MailHandler),
-    ('/equipment', EquipHandler),
-    ('/roomlist', RoomListHandler),
-    ('/admin', AdminListHandler),
-    ('/delete', DeletionHandler),
+    webapp2.Route(r'/', handler=MainHandler, name='home'),
+    webapp2.Route(r'/rooms', handler=RoomHandler, name='room-list'),
+    webapp2.Route(r'/rooms/<roomnum>', handler=RoomDetailHandler, name='room-detail'),
+    webapp2.Route(r'/help', handler=HelpHandler, name='help'),
+    webapp2.Route(r'/sendmail', handler=MailHandler, name='contact'),
+    webapp2.Route(r'/equipment', handler=EquipHandler, name='equip'),
+    webapp2.Route(r'/roomlist', handler=RoomListHandler, name='scheduledrooms'),
+    webapp2.Route(r'/admin', handler=AdminListHandler, name='admin'),
+    webapp2.Route(r'/delete', handler=DeletionHandler, name='delete'),
 ], debug=True)
 
 def main():
