@@ -13,7 +13,8 @@
 		<a href="{{logout_url}}">Logout</a>
 		{% if isadmin %}
 		<p> ADMIN ACCESS</p>
-		<a href="/admin">Check Scheduled Rooms</a>
+		<a href="/admin">Check Scheduled Rooms</a><br />
+		<a href="/calendar">iCal export</a>
 		{% endif %}
 		{% else %}
 		<a href="{{login_url}}">Admin login</a>

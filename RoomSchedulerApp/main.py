@@ -27,6 +27,7 @@ from google.appengine.ext.webapp import util
 from google.appengine.api import mail, users
 #from aeoid import middleware, users
 from webapp2_extras import jinja2
+import datetime
 
 from models import *
 
@@ -76,6 +77,19 @@ class MailHandler(BaseHandler):
     toaddr = "Room Scheduling Message <notification@roomscheduler490.appspotmail.com>"
     mail.send_mail(fromaddr, toaddr, subject, msg)
     self.response.write('Sent Message')
+
+class CalendarHandler(BaseHandler):
+  def get(self):
+    events = RoomSchedule.all()
+    response = "BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//roomscheduling/eventcal//EN\n"
+    for event in events:
+      dtstart=datetime.datetime(event.startdate.year, event.startdate.month, event.startdate.day,event.starttime+8).strftime("%Y%m%dT%H%M%S")
+      dtend=datetime.datetime(event.startdate.year, event.startdate.month, event.startdate.day,event.endtime+8).strftime("%Y%m%dT%H%M%S")
+      response += "BEGIN:VEVENT\nDTSTART:%s\nDTEND:%s\nSUMMARY:%s\nEND:VEVENT" % (dtstart,dtend,event.roomnum)
+    response += "END:VCALENDAR"
+    self.response.headers['Content-Type'] = 'text/calendar'
+    self.response.out.write(response)
+                      
     
 application = webapp2.WSGIApplication([
     webapp2.Route(r'/', handler=MainHandler, name='home'),
@@ -87,6 +101,7 @@ application = webapp2.WSGIApplication([
     webapp2.Route(r'/roomlist', handler=RoomListHandler, name='scheduledrooms'),
     webapp2.Route(r'/admin', handler=AdminListHandler, name='admin'),
     webapp2.Route(r'/delete', handler=DeletionHandler, name='delete'),
+    webapp2.Route(r'/calendar', handler=CalendarHandler, name='cal'),
 ], debug=True)
 
 def main():
