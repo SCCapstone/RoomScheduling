@@ -2,10 +2,9 @@
 {% block title %}Room Detail - {{ roomnum }}{% endblock %}
 {% block head %}
 	{{ super() }}
-	<link rel="stylesheet" href="/css/timePicker.css"/>
-	<script language="javascript" type="text/javascript" src="/static/datetimepicker.js">
-	//Date Time Picker script- by TengYong Ng of http://www.rainforestnet.com
-	</script>
+	<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+	<link rel="stylesheet" href="/css/datepicker.css">
+	<script src="/static/bootstrap-datepicker.js"></script>
 {% endblock %}
 
 {% block content %}
@@ -26,12 +25,12 @@
  <div class="form-group">
   <label for="sdate" class="col-sm-2 control-label">Date</label>
   <div class="col-sm-3">
-  <div class="input-group">
-   <input type="text" name="sdate" id="sdate" class="form-control"><span class="input-group-btn"><a href="javascript:NewCal('sdate','ddmmyyyy')"><button type="button" class="btn btn-default">
-  <span class="glyphicon glyphicon-calendar"></span>
-</button></a></span>
-  </div>
-  </div>
+  <div id="container">
+<div class="input-group date">
+  <input type="text" name="sdate" id="sdate" class="form-control"><span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+</div>
+</div>
+</div>
   </div>
   <div class="form-group">
   <label for="stime" class="col-sm-2 control-label">Start time</label>
@@ -103,4 +102,9 @@
 		
 	</table>
 </div>
+  <script>
+jQuery(function($) {
+    $( ".input-group.date" ).datepicker();
+  });
+  </script>
 {% endblock %}
