@@ -21,9 +21,8 @@ class RoomSchedule(db.Model):
   userid = db.StringProperty(required=True)
   role = db.StringProperty(required=True, choices=set(["student","faculty","admin"]))
   startdate = db.DateProperty(required=True)
-  enddate = db.DateProperty(required=True)
-  starttime = db.TimeProperty(required=True)
-  endtime = db.TimeProperty(required=True)
+  starttime = db.IntegerProperty(required=True)
+  endtime = db.IntegerProperty(required=True)
   reserved = db.BooleanProperty(indexed=False)
   deletekey = db.StringProperty(required=True)
 
@@ -33,9 +32,8 @@ class ScheduleRequest(db.Model):
   useremail = db.StringProperty(required=True)
   role = db.StringProperty(required=True, choices=set(["student","faculty","admin"]))
   startdate = db.DateProperty(required=True)
-  enddate = db.DateProperty(required=True)
-  starttime = db.TimeProperty(required=True)
-  endtime = db.TimeProperty(required=True)
+  starttime = db.IntegerProperty(required=True)
+  endtime = db.IntegerProperty(required=True)
   reserved = db.BooleanProperty(indexed=False)
   timestamp = db.DateTimeProperty(required=True)
   deletekey = db.StringProperty(required=True)
@@ -54,3 +52,5 @@ class EquipmentInfo(db.Model):
 
 class AdminName(db.Model):
   email = db.StringProperty(required=True)
+
+timetable = ["8:00 AM", "9:00 AM", "10:00 AM", "11:00 AM", "12:00 PM", "1:00 PM", "2:00 PM", "3:00 PM", "4:00 PM", "5:00 PM", "6:00 PM", "7:00 PM", "8:00 PM"]

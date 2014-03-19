@@ -17,7 +17,8 @@ class AdminListHandler(BaseHandler):
       rqs = ScheduleRequest.all()
       template_args ={
         'user': user,
-        'rqs': rqs,  
+        'rqs': rqs,
+        'timetable': timetable
       }
       self.render_template("adminlist.html", **template_args)
 
@@ -31,7 +32,7 @@ class AdminListHandler(BaseHandler):
       rq = db.get(rq)
       parqs.append(rq)
       accepted = RoomSchedule(roomnum=rq.roomnum, userid=rq.userid,role=rq.role,
-                              startdate=rq.startdate,enddate=rq.enddate,
+                              startdate=rq.startdate,
                               starttime=rq.starttime,endtime=rq.endtime,
                               deletekey=rq.deletekey, reserved=True)
       accepted.put()
@@ -59,6 +60,7 @@ class AdminListHandler(BaseHandler):
     template_args = {
       'user': users.get_current_user(),
       'arqs': parqs,
-      'drqs': pdrqs
+      'drqs': pdrqs,
+      'timetable': timetable
     } 
     self.render_template("adminsuccess.html", **template_args)

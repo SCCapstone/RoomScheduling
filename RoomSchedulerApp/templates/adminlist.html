@@ -18,7 +18,6 @@
 			<th>Timestamp</th>
 			<th>Start Date</th>
 			<th>Start Time</th>
-			<th>End Date</th>
 			<th>End Time</th>
 		</tr>
 		{% for rq in rqs %}
@@ -30,9 +29,8 @@
 			<td>{{rq.userid}}</td>
 			<td>{{rq.timestamp}}</td>
 			<td>{{rq.startdate}}</td>
-			<td>{{rq.starttime}}</td>
-			<td>{{rq.enddate}}</td>
-			<td>{{rq.endtime}}</td>
+			<td>{{timetable[rq.starttime]}}</td>
+			<td>{{timetable[rq.endtime]}}</td>
 		<tr>
 		{% endfor %}
 	</table>

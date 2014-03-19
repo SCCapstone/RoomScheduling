@@ -24,7 +24,7 @@
     </div>
   </div>
  <div class="form-group">
-  <label for="sdate" class="col-sm-2 control-label">Start date</label>
+  <label for="sdate" class="col-sm-2 control-label">Date</label>
   <div class="col-sm-3">
   <div class="input-group">
    <input type="text" name="sdate" id="sdate" class="form-control"><span class="input-group-btn"><a href="javascript:NewCal('sdate','ddmmyyyy')"><button type="button" class="btn btn-default">
@@ -34,32 +34,22 @@
   </div>
   </div>
   <div class="form-group">
-  <label for="edate" class="col-sm-2 control-label">End date</label>
-  <div class="col-sm-3">
-  <div class="input-group">
-   <input type="text" name="edate" id="edate" class="form-control"><span class="input-group-btn"><a href="javascript:NewCal('edate','ddmmyyyy')"><button type="button" class="btn btn-default">
-  <span class="glyphicon glyphicon-calendar"></span>
-</button></a></span>
-  </div>
-  </div>
-  </div>
-  <div class="form-group">
   <label for="stime" class="col-sm-2 control-label">Start time</label>
   <div class="col-sm-3">
   <select class="form-control" name="stime" id="stime">
-      	<option name="time" value="8:00 AM">8:00 AM</option>
-    	<option name="time" value="9:00 AM">9:00 AM</option>
-    	<option name="time" value="10:00 AM">10:00 AM</option>
-    	<option name="time" value="11:00 AM">11:00 AM</option>
-    	<option name="time" value="12:00 PM">12:00 PM</option>
-    	<option name="time" value="1:00 PM">1:00 PM</option>
-    	<option name="time" value="2:00 PM">2:00 PM</option>
-    	<option name="time" value="3:00 PM">3:00 PM</option>
-    	<option name="time" value="4:00 PM">4:00 PM</option>
-    	<option name="time" value="5:00 PM">5:00 PM</option>
-    	<option name="time" value="6:00 PM">6:00 PM</option>
-    	<option name="time" value="7:00 PM">7:00 PM</option>
-    	<option name="time" value="8:00 PM">8:00 PM</option>
+      	<option name="time" value="0">8:00 AM</option>
+    	<option name="time" value="1">9:00 AM</option>
+    	<option name="time" value="2">10:00 AM</option>
+    	<option name="time" value="3">11:00 AM</option>
+    	<option name="time" value="4">12:00 PM</option>
+    	<option name="time" value="5">1:00 PM</option>
+    	<option name="time" value="6">2:00 PM</option>
+    	<option name="time" value="7">3:00 PM</option>
+    	<option name="time" value="8">4:00 PM</option>
+    	<option name="time" value="9">5:00 PM</option>
+    	<option name="time" value="10">6:00 PM</option>
+    	<option name="time" value="11">7:00 PM</option>
+    	<option name="time" value="12">8:00 PM</option>
   </select>
   </div>
   </div>
@@ -67,19 +57,19 @@
   <label for="etime" class="col-sm-2 control-label">End time</label>
   <div class="col-sm-3">
   <select class="form-control" name="etime" id="etime">
-      	<option name="time" value="8:00 AM">8:00 AM</option>
-    	<option name="time" value="9:00 AM">9:00 AM</option>
-    	<option name="time" value="10:00 AM">10:00 AM</option>
-    	<option name="time" value="11:00 AM">11:00 AM</option>
-    	<option name="time" value="12:00 PM">12:00 PM</option>
-    	<option name="time" value="1:00 PM">1:00 PM</option>
-    	<option name="time" value="2:00 PM">2:00 PM</option>
-    	<option name="time" value="3:00 PM">3:00 PM</option>
-    	<option name="time" value="4:00 PM">4:00 PM</option>
-    	<option name="time" value="5:00 PM">5:00 PM</option>
-    	<option name="time" value="6:00 PM">6:00 PM</option>
-    	<option name="time" value="7:00 PM">7:00 PM</option>
-    	<option name="time" value="8:00 PM">8:00 PM</option>
+      	<option name="time" value="0">8:00 AM</option>
+    	<option name="time" value="1">9:00 AM</option>
+    	<option name="time" value="2">10:00 AM</option>
+    	<option name="time" value="3">11:00 AM</option>
+    	<option name="time" value="4">12:00 PM</option>
+    	<option name="time" value="5">1:00 PM</option>
+    	<option name="time" value="6">2:00 PM</option>
+    	<option name="time" value="7">3:00 PM</option>
+    	<option name="time" value="8">4:00 PM</option>
+    	<option name="time" value="9">5:00 PM</option>
+    	<option name="time" value="10">6:00 PM</option>
+    	<option name="time" value="11">7:00 PM</option>
+    	<option name="time" value="12">8:00 PM</option>
   </select>
   </div>
   </div>
@@ -89,29 +79,28 @@
     </div>
   </div>
 </form>
-
+	
 	<table class="table">
-
 		<tr>
-			<th>Room Number</th>
-			<th>User ID</th>
-			<th>Start Date</th>
-			<th>Start Time</th>
-			<th>End Date</th>
-			<th>End Time</th>
+			<th>Time</th>
+			<th>Today</th>
+			<th>Tomorrow</th>
+			<th>Day After Tomorrow</th>
 		</tr>
-
-		{% for rm in rms %}
-		<tr>
-		  
-			<td>{{rm.roomnum}}</td>
-			<td>{{rm.userid}}</td>
-			<td>{{rm.startdate}}</td>
-			<td>{{rm.starttime}}</td>
-			<td>{{rm.enddate}}</td>
-			<td>{{rm.endtime}}</td>
-		<tr>
-		{% endfor %}
+<tr><td>8:00 AM</td><td>{{blocktable[0][0]}}</td><td>{{blocktable[1][0]}}</td><td>{{blocktable[2][0]}}</td></tr>
+<tr><td>9:00 AM</td><td>{{blocktable[0][1]}}</td><td>{{blocktable[1][1]}}</td><td>{{blocktable[2][1]}}</td></tr>
+<tr><td>10:00 AM</td><td>{{blocktable[0][2]}}</td><td>{{blocktable[1][2]}}</td><td>{{blocktable[2][2]}}</td></tr>
+<tr><td>11:00 AM</td><td>{{blocktable[0][3]}}</td><td>{{blocktable[1][3]}}</td><td>{{blocktable[2][3]}}</td></tr>
+<tr><td>12:00 PM</td><td>{{blocktable[0][4]}}</td><td>{{blocktable[1][4]}}</td><td>{{blocktable[2][4]}}</td></tr>
+<tr><td>1:00 PM</td><td>{{blocktable[0][5]}}</td><td>{{blocktable[1][5]}}</td><td>{{blocktable[2][5]}}</td></tr>
+<tr><td>2:00 PM</td><td>{{blocktable[0][6]}}</td><td>{{blocktable[1][6]}}</td><td>{{blocktable[2][6]}}</td></tr>
+<tr><td>3:00 PM</td><td>{{blocktable[0][7]}}</td><td>{{blocktable[1][7]}}</td><td>{{blocktable[2][7]}}</td></tr>
+<tr><td>4:00 PM</td><td>{{blocktable[0][8]}}</td><td>{{blocktable[1][8]}}</td><td>{{blocktable[2][8]}}</td></tr>
+<tr><td>5:00 PM</td><td>{{blocktable[0][9]}}</td><td>{{blocktable[1][9]}}</td><td>{{blocktable[2][9]}}</td></tr>
+<tr><td>6:00 PM</td><td>{{blocktable[0][10]}}</td><td>{{blocktable[1][10]}}</td><td>{{blocktable[2][10]}}</td></tr>
+<tr><td>7:00 PM</td><td>{{blocktable[0][11]}}</td><td>{{blocktable[1][11]}}</td><td>{{blocktable[2][11]}}</td></tr>
+<tr><td>8:00 PM</td><td>{{blocktable[0][12]}}</td><td>{{blocktable[1][12]}}</td><td>{{blocktable[2][12]}}</td></tr>
+		
 	</table>
 </div>
 {% endblock %}

@@ -6,17 +6,16 @@
 
 {% block content %}
 	
-	<div align="center">
+	<div class="col-md-9">
 		{% if arqs %}
 		Approved requests:<br />
-			<table>
+			<table class="table">
 
 			<tr>
 			<th>Room Number</th>
 			<th>User ID</th>
 			<th>Start Date</th>
 			<th>Start Time</th>
-			<th>End Date</th>
 			<th>End Time</th>
 			</tr>
 
@@ -25,9 +24,8 @@
 			<td>{{arq.roomnum}}</td>
 			<td>{{arq.userid}}</td>
 			<td>{{arq.startdate}}</td>
-			<td>{{arq.starttime}}</td>
-			<td>{{arq.enddate}}</td>
-			<td>{{arq.endtime}}</td>
+			<td>{{timetable[arq.starttime]}}</td>
+			<td>{{timetable[arq.endtime]}}</td>
 		<tr>
 		{% endfor %}
 		</table>
@@ -35,14 +33,13 @@
 		
 		{% if drqs %}
 		Denied requests:<br />
-			<table>
+			<table class="table">
 
 			<tr>
 			<th>Room Number</th>
 			<th>User ID</th>
 			<th>Start Date</th>
 			<th>Start Time</th>
-			<th>End Date</th>
 			<th>End Time</th>
 			</tr>
 	<br />
@@ -51,9 +48,8 @@
 			<td>{{drq.roomnum}}</td>
 			<td>{{drq.userid}}</td>
 			<td>{{drq.startdate}}</td>
-			<td>{{drq.starttime}}</td>
-			<td>{{drq.enddate}}</td>
-			<td>{{drq.endtime}}</td>
+			<td>{{timetable[drq.starttime]}}</td>
+			<td>{{timetable[drq.endtime]}}</td>
 		<tr>
 		{% endfor %}
 		</table>

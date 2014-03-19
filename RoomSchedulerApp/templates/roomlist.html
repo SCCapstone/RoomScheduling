@@ -14,7 +14,6 @@
 			<th>User ID</th>
 			<th>Start Date</th>
 			<th>Start Time</th>
-			<th>End Date</th>
 			<th>End Time</th>
 		</tr>
 
@@ -24,9 +23,8 @@
 			<td>{{rm.roomnum}}</td>
 			<td>{{rm.userid}}</td>
 			<td>{{rm.startdate}}</td>
-			<td>{{rm.starttime}}</td>
-			<td>{{rm.enddate}}</td>
-			<td>{{rm.endtime}}</td>
+			<td>{{timetable[rm.starttime]}}</td>
+			<td>{{timetable[rm.endtime]}}</td>
 		<tr>
 		{% endfor %}
 	</table>
