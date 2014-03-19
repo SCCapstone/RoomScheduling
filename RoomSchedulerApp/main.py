@@ -85,7 +85,7 @@ class CalendarHandler(BaseHandler):
     for event in events:
       dtstart=datetime.datetime(event.startdate.year, event.startdate.month, event.startdate.day,event.starttime+8).strftime("%Y%m%dT%H%M%S")
       dtend=datetime.datetime(event.startdate.year, event.startdate.month, event.startdate.day,event.endtime+8).strftime("%Y%m%dT%H%M%S")
-      response += "BEGIN:VEVENT\nDTSTART:%s\nDTEND:%s\nSUMMARY:%s\nEND:VEVENT" % (dtstart,dtend,event.roomnum)
+      response += "BEGIN:VEVENT\nDTSTART:%s\nDTEND:%s\nSUMMARY:%s\nEND:VEVENT\n" % (dtstart,dtend,event.roomnum)
     response += "END:VCALENDAR"
     self.response.headers['Content-Type'] = 'text/calendar'
     self.response.out.write(response)
