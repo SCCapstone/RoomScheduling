@@ -79,7 +79,7 @@ class RoomDetailHandler(BaseHandler):
       dkey = sha1(str(random())).hexdigest()
       rss = ScheduleRequest(roomnum=rnum,userid=uid,useremail=uemail,role="admin",timestamp=timestamp,
       deletekey=dkey,
-      startdate = datetime.datetime.strptime(sdate.strip(" "), '%d-%m-%Y').date(),
+      startdate = datetime.datetime.strptime(sdate.strip(" "), '%m/%d/%Y').date(),
       starttime = int(stime), 
       endtime = int(etime), reserved=True)
       rss.put()
