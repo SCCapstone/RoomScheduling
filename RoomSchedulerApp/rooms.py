@@ -75,14 +75,16 @@ class RoomDetailHandler(BaseHandler):
         failflag = True
         reason="Valid sc.edu email address needed."
       sdate = self.request.get('sdate')
-      startdatetime = datetime.datetime.strptime(sdate.strip(" "), '%m/%d/%Y')
-      delta = startdatetime - timestamp
-      if not failflag and delta.days < -1:
-        failflag = True
-        reason = "You entered a date in the past."
+      
       if not failflag and not sdate:
         failflag = True
         reason = "You forgot the date."
+      elif not failflag:
+        startdatetime = datetime.datetime.strptime(sdate.strip(" "), '%m/%d/%Y')
+        delta = startdatetime - timestamp
+        if delta.days < -1:
+          failflag = True
+          reason = "You entered a date in the past."
       rnum = roomnum
       stime = self.request.get('stime')
       etime = self.request.get('etime')
