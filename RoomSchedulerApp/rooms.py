@@ -6,6 +6,7 @@ from datetime import date
 import re
 from hashlib import sha1
 from random import random
+import logging
 
 
 from main import BaseHandler
@@ -62,24 +63,43 @@ class RoomDetailHandler(BaseHandler):
 
   def post(self, roomnum):
     try:
+      failflag = False
+      reason = ""
       timestamp = datetime.datetime.now()
       uid = self.request.get('name')
+      if not uid:
+        failflag = True
+        reason = "You forgot your name."
       uemail = self.request.get('email')
-      if not (re.match(r"[^@]+@[^@]+\.[^@]+", uemail) and uemail.split('@')[1].endswith('sc.edu')):
+      if (not failflag) and (not (re.match(r"[^@]+@[^@]+\.[^@]+", uemail) and uemail.split('@')[1].endswith('sc.edu'))):
+        failflag = True
+        reason="Valid sc.edu email address needed."
+      sdate = self.request.get('sdate')
+      startdatetime = datetime.datetime.strptime(sdate.strip(" "), '%m/%d/%Y')
+      delta = startdatetime - timestamp
+      if not failflag and delta.days < -1:
+        failflag = True
+        reason = "You entered a date in the past."
+      if not failflag and not sdate:
+        failflag = True
+        reason = "You forgot the date."
+      rnum = roomnum
+      stime = self.request.get('stime')
+      etime = self.request.get('etime')
+      if not failflag and int(etime)-int(stime) <= 0:
+        failflag = True
+        reason = "Your end time was before the start time."
+      if failflag:
         template_args = {
-          'reason': "Valid sc.edu email address needed.",
+          'reason': reason,
           'timestamp': timestamp,
         }
         self.render_template("roomfailure.html", **template_args)
         return
-      sdate = self.request.get('sdate')
-      rnum = roomnum
-      stime = self.request.get('stime')
-      etime = self.request.get('etime')
       dkey = sha1(str(random())).hexdigest()
       rss = ScheduleRequest(roomnum=rnum,userid=uid,useremail=uemail,role="admin",timestamp=timestamp,
       deletekey=dkey,
-      startdate = datetime.datetime.strptime(sdate.strip(" "), '%m/%d/%Y').date(),
+      startdate = startdatetime.date(),
       starttime = int(stime), 
       endtime = int(etime), reserved=True)
       rss.put()

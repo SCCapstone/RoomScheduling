@@ -11,6 +11,7 @@
   <label for="equipmenttoselect" class="col-sm-2 control-label">Select equipment</label>
   <div class="col-sm-3">
   <select class="form-control" name="equipmenttoselect" id="equipmenttoselect">
+	<option name="equip" value="None">None</option>
    {% for etype in etypes %}
     <option name="equip" value="{{etype.equipmenttype}}">{{etype.equipmenttype}}</option>
    {% endfor %}
