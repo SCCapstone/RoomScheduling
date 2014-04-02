@@ -12,6 +12,9 @@
 	<table class="table tablesorter" id="myTable">
 		<thead>
 		<tr>
+			{% if isadmin %}
+			<th>Delete</th>
+			{% endif %}
 			<th>Room Number</th>
 			<th>User ID</th>
 			<th>Start Date</th>
@@ -22,7 +25,9 @@
 		<tbody>
 		{% for rm in rms %}
 		<tr>
-		  
+			{% if isadmin %}
+			<td><a href="/delete?dkey={{rm.deletekey}}">X</a></td>
+			{% endif %}
 			<td>{{rm.roomnum}}</td>
 			<td>{{rm.userid}}</td>
 			<td>{{rm.startdate}}</td>

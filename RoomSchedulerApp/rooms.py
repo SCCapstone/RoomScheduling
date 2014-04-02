@@ -134,11 +134,12 @@ class RoomListHandler(BaseHandler):
   def get(self):
     user = users.get_current_user()
     rms = RoomSchedule.all()
+    uisAdmin = False if not user else UserInfo.isAdmin(user.user_id())
     template_args = {
-      'logout_url': users.create_logout_url('/'),
       'user': user,
       'rms': rms,
-      'timetable': timetable
+      'timetable': timetable,
+      'isadmin': uisAdmin,
     }
     self.render_template("roomlist.html", **template_args)
 
