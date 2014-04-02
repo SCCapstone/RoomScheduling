@@ -85,10 +85,15 @@ class CalendarHandler(BaseHandler):
     for event in events:
       dtstart=datetime.datetime(event.startdate.year, event.startdate.month, event.startdate.day,event.starttime+8).strftime("%Y%m%dT%H%M%S")
       dtend=datetime.datetime(event.startdate.year, event.startdate.month, event.startdate.day,event.endtime+8).strftime("%Y%m%dT%H%M%S")
-      response += "BEGIN:VEVENT\nDTSTART:%s\nDTEND:%s\nSUMMARY:%s\nEND:VEVENT\n" % (dtstart,dtend,event.roomnum)
+      response += "BEGIN:VEVENT\nDTSTART:%s\nDTEND:%s\nLOCATION:%s\nSUMMARY:%s\nEND:VEVENT\n" % (dtstart,dtend,event.roomnum,event.userid)
     response += "END:VCALENDAR"
     self.response.headers['Content-Type'] = 'text/calendar'
     self.response.out.write(response)
+
+class CalendarEmbedHandler(BaseHandler):
+  def get(self):
+    template_args = {}
+    self.render_template("calendarembed.html", **template_args)
                       
     
 application = webapp2.WSGIApplication([
@@ -102,6 +107,7 @@ application = webapp2.WSGIApplication([
     webapp2.Route(r'/admin', handler=AdminListHandler, name='admin'),
     webapp2.Route(r'/delete', handler=DeletionHandler, name='delete'),
     webapp2.Route(r'/calendar', handler=CalendarHandler, name='cal'),
+    webapp2.Route(r'/calendarembed', handler=CalendarEmbedHandler, name='calembed'),
 ], debug=True)
 
 def main():
