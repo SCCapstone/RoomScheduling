@@ -2,11 +2,26 @@
 {% block title %}Reserve equipment{% endblock %}
 {% block head %}
 	{{ super() }}
+	<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+	<link rel="stylesheet" href="/css/datepicker.css">
+	<script src="/static/bootstrap-datepicker.js"></script>
 {% endblock %}
 
 {% block content %}
 <div class="col-md-9">
     <form name="esubmission" action="/equipment" method="post" class="form-horizontal" role="form">
+	 <div class="form-group">
+    <label for="name" class="col-sm-2 control-label" name="name">Name</label>
+    <div class="col-sm-3">
+      <input type="text" class="form-control" id="name" name="name" placeholder="Name">
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="email" class="col-sm-2 control-label">Email</label>
+    <div class="col-sm-3">
+      <input type="email" class="form-control" id="email" name="email" placeholder="Email">
+    </div>
+  </div>
 	<div class="form-group">
   <label for="equipmenttoselect" class="col-sm-2 control-label">Select equipment</label>
   <div class="col-sm-3">
@@ -45,6 +60,16 @@
  	</select>
 	</div>
 	</div>
+	 <div class="form-group">
+  <label for="sdate" class="col-sm-2 control-label">Date</label>
+  <div class="col-sm-3">
+  <div id="container">
+<div class="input-group date">
+  <input type="text" name="sdate" id="sdate" class="form-control"><span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+</div>
+</div>
+</div>
+  </div>
   <div class="form-group">
     <div class="col-sm-offset-2 col-sm-10">
       <button type="submit" class="btn btn-default">Submit</button>
@@ -52,5 +77,10 @@
   </div>
 </form>
 </div>
+ <script>
+jQuery(function($) {
+    $( ".input-group.date" ).datepicker();
+  });
+  </script>
     
 {% endblock %}

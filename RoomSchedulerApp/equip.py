@@ -6,6 +6,9 @@ import datetime
 
 from main import BaseHandler
 from models import *
+import re
+from datetime import date
+import datetime
 
 class EquipHandler(BaseHandler):
   def get(self):
@@ -16,12 +19,39 @@ class EquipHandler(BaseHandler):
     self.render_template("equipment.html", **template_args)
 
   def post(self):
-    user = users.get_current_user().nickname()
+    failflag=False
+    reason=""
+    timestamp = datetime.datetime.now()
+    uid = self.request.get('name')
+    if not uid:
+      failflag = True
+      reason = "You forgot your name."
+    uemail = self.request.get('email')
+    if (not failflag) and (not (re.match(r"[^@]+@[^@]+\.[^@]+", uemail) and uemail.split('@')[1].endswith('sc.edu'))):
+      failflag = True
+      reason="Valid sc.edu email address needed."
+    sdate = self.request.get('sdate')
+    if not failflag and not sdate:
+      failflag = True
+      reason = "You forgot the date."
+    elif not failflag:
+      startdatetime = datetime.datetime.strptime(sdate.strip(" "), '%m/%d/%Y')
+      delta = startdatetime - timestamp
+      if delta.days < -1:
+        failflag = True
+        reason = "You entered a date in the past."
+    if failflag:
+        template_args = {
+          'reason': reason,
+          'timestamp': timestamp,
+        }
+        self.render_template("roomfailure.html", **template_args)
+        return
     equip = self.request.get('equiptoselect')
     iclick = self.request.get('iclickamt')
     laptop = self.request.get('laptoselect')
     timestamp = datetime.datetime.now()
-    eus = EquipmentUsage(userid=user, equipment=equip, iclickeramt=iclick, laptopsel=laptop)
+    eus = EquipmentUsage(userid=uid,useremail=uemail, equipment=equip, iclickeramt=iclick, laptopsel=laptop,startdate=startdatetime.date(),)
     eus.put()
     
     template_args = {
@@ -31,23 +61,3 @@ class EquipHandler(BaseHandler):
       'timestamp': timestamp,
     }
     self.render_template("equipsuccess.html", **template_args)
-      
-class EquipSuccessHandler(BaseHandler):
-  def get(self):
-    user = users.get_current_user()
-    timestamp = datetime.datetime.now()
-    
-    template_args = {
-        'user': user,
-    }
-    self.render_template("equipsuccess.html", **template_args)
-
-class EquipFailureHandler(BaseHandler):  
-  def get(self):
-    user = users.get_current_user()
-    timestamp = datetime.datetime.now()
-    
-    template_args = {
-        'user': user,
-    }
-    self.render_template("equipfailure.html", **template_args)

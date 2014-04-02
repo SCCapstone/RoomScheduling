@@ -40,9 +40,11 @@ class ScheduleRequest(db.Model):
   
 class EquipmentUsage(db.Model):
   userid = db.StringProperty(required=True)
+  useremail = db.StringProperty(required=True)
   equipment = db.StringProperty()
   iclickeramt = db.StringProperty()
-  laptopsel = db.StringProperty() 
+  laptopsel = db.StringProperty()
+  startdate = db.DateProperty(required=True)
 
 class RoomInfo(db.Model):
   roomnum = db.StringProperty(required=True)
