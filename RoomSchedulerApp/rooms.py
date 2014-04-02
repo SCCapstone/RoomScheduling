@@ -13,9 +13,9 @@ from main import BaseHandler
 from models import *
 
 def genblocktable(room):
-  todayblocks=["Free"]*12
-  tomorrowblocks=["Free"]*12
-  dayafterblocks=["Free"]*12
+  todayblocks=["Free"]*24
+  tomorrowblocks=["Free"]*24
+  dayafterblocks=["Free"]*24
   today = date.today()
   tomorrow = today+datetime.timedelta(days=1)
   dayafter = today+datetime.timedelta(days=2)
