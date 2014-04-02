@@ -6,16 +6,27 @@
 
 {% block content %}
 <div class="col-md-9">
-<img id="map" src="/images/map.png" border="0" width="628" height="360" usemap="#image-maps-2014-03-05-110954" alt="" />
-<map name="image-maps-2014-03-05-110954" id="ImageMapsCom-image-maps-2014-03-05-110954">
-<area  shape="rect" coords="7,0,154,173" alt="" title="" target="_self" href="/rooms/029"     />
-<area  shape="rect" coords="157,0,304,173" alt="" title="" target="_self" href="/rooms/030"     />
-<area  shape="rect" coords="316,0,477,171" alt="" title="" target="_self" href="/rooms/117"     />
-<area  shape="rect" coords="482,4,624,173" alt="" title="" target="_self" href="/rooms/125"     />
-<area  shape="rect" coords="8,179,150,348" alt="" title="" target="_self" href="/rooms/272"     />
-<area  shape="rect" coords="158,178,307,350" alt="" title="" target="_self" href="/rooms/274-0"     />
-<area  shape="rect" coords="313,176,477,350" alt="" title="" target="_self" href="/rooms/274-D"     />
-<area  shape="rect" coords="483,181,622,353" alt="" title="" target="_self" href="/rooms/274-M"     />
+
+<img id="basement" src="/images/basement.jpg" border="0" width="450" height="333" orgWidth="450" orgHeight="333" usemap="#basementMap" alt="" />
+<map name="basementMap" id="bMap">
+<area  alt="" title="" href="/rooms/029" shape="poly" coords="136,243,136,271,164,291,216,263,220,231,188,219" style="outline:none;" target="_self"/>
+<area  alt="" title="" href="/rooms/030" shape="poly" coords="331,269,331,301,381,329,443,295,441,263,391,237" style="outline:none;" target="_self"/>
 </map>
+
+
+<img id="floor1" src="/images/floor1.jpg" border="0" width="450" height="302" orgWidth="450" orgHeight="302" usemap="#floor1Map" alt="" />
+<map name="floor1Map" id="f1Map">
+<area  alt="" title="" href="/rooms/125" shape="poly" coords="90,192,92,218,112,228,136,212,136,192,112,178" style="outline:none;" target="_self"     />
+<area  alt="" title="" href="/rooms/117" shape="poly" coords="166,116,166,138,194,156,224,144,226,118,196,100" style="outline:none;" target="_self"     />
+</map>
+
+<img id="floor2" src="/images/floor2.jpg" border="0" width="450" height="344" orgWidth="450" orgHeight="344" usemap="#floor2Map" alt="" />
+<map name="floor2Map" id="f2Map">
+<area  alt="" title="" href="/rooms/272" shape="poly" coords="283,188,281,212,307,226,339,210,339,188,317,174,313,172" style="outline:none;" target="_self"     />
+<area  alt="" title="" href="/rooms/274-O" shape="poly" coords="97,81,99,107,139,129,177,107,179,93,201,81,201,71,163,51" style="outline:none;" target="_self"     />
+<area  alt="" title="" href="/rooms/274-D" shape="poly" coords="257,55,259,79,275,85,285,75,295,83,311,77,311,53,291,41" style="outline:none;" target="_self"     />
+<area  alt="" title="" href="/rooms/274-M" shape="poly" coords="181,93,181,119,213,135,241,133,265,123,261,99,217,75" style="outline:none;" target="_self"  />
+</map>
+
 </div>
 {% endblock %}
