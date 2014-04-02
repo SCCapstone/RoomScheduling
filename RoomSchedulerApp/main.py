@@ -50,7 +50,7 @@ class MainHandler(BaseHandler):
     if user:
       q = db.GqlQuery("SELECT * FROM UserInfo WHERE userid = :1", user.user_id())
       if not q.get():
-        uinfo = UserInfo(userid=user.user_id(),email=user.email(), nickname=user.nickname(), role="admin")
+        uinfo = UserInfo(userid=user.user_id(),email=user.email(), nickname=user.nickname(), role="student")
         uinfo.put()
     uisAdmin = False if not user else UserInfo.isAdmin(user.user_id())
     template_args = {
