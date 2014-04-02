@@ -2,13 +2,15 @@
 {% block title %}List scheduled rooms{% endblock %}
 {% block head %}
 	{{ super() }}
+	<script src="/static/jquery.tablesorter.min.js"></script>
+	<link rel="stylesheet" href="/css/bluestyle.css">
 {% endblock %}
 
 {% block content %}
 
 	<div class="col-md-9">
-	<table class="table">
-
+	<table class="table tablesorter" id="myTable">
+		<thead>
 		<tr>
 			<th>Room Number</th>
 			<th>User ID</th>
@@ -16,7 +18,8 @@
 			<th>Start Time</th>
 			<th>End Time</th>
 		</tr>
-
+		</thead>
+		<tbody>
 		{% for rm in rms %}
 		<tr>
 		  
@@ -27,6 +30,12 @@
 			<td>{{timetable[rm.endtime]}}</td>
 		<tr>
 		{% endfor %}
+	</tbody>
 	</table>
     </div>
+	<script>
+	 $(function() {
+    $("table#myTable").tablesorter();
+  });
+	</script>
 {% endblock %}
