@@ -108,9 +108,9 @@ class RoomDetailHandler(BaseHandler):
       sender_address = "Room Scheduling Notification <notification@roomscheduler490.appspotmail.com>"
       subject = "Schedule Request deletion URL"
       body = """
-      Your request of room %s has been submitted. If you need to delete this request, use the link below.
+      Your request of room %s from %s to %s on %s has been submitted. If you need to delete this request, use the link below.
       http://roomscheduler490.appspot.com/delete?dkey=%s
-      """ % (rnum, dkey)
+      """ % (rnum,timetable[int(stime)],timetable[int(etime)],sdate, dkey)
       user_address = uemail
       mail.send_mail(sender_address, user_address, subject, body)
     except ValueError:
