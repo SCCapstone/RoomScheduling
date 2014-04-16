@@ -8,8 +8,12 @@
 {% endblock %}
 
 {% block content %}
+
 <div class="col-md-9">
 <form name="rsubmission" action="/rooms/{{roomnum}}" method="post" class="form-horizontal" role="form">
+  <div class="form-group">
+     <label for="rnum" class="col-sm-2 control-label" name="rnum">Room {{ roomnum }}</label>
+  </div>
   <div class="form-group">
     <label for="name" class="col-sm-2 control-label" name="name">Name</label>
     <div class="col-sm-3">
