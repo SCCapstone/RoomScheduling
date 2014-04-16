@@ -159,6 +159,7 @@ class DeletionHandler(BaseHandler):
     else:
       deleterecord.delete()
       self.response.out.write("Room reservation request deleted.")
+    self.response.out.write('<br /><a href="/">Go back</a>')
       
 
 
