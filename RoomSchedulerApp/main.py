@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: cp1252 -*-
 #
 # Copyright 2007 Google Inc.
 #
@@ -83,21 +84,25 @@ class CalendarHandler(BaseHandler):
     events = RoomSchedule.all()
     response = "BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//roomscheduling/eventcal//EN\n"
     for event in events:
-      if event.starttime%2 is not 0:
+      logging.info(event.starttime%2)
+      logging.info(event.endtime%2)
+      if (event.starttime%2) == 0:
         starthour=event.starttime/2
         startminute=0
       else:
         starthour=event.starttime/2
         startminute=30
-      if event.endtime%2 is not 0:
+      if (event.endtime%2) == 0:
         endhour = event.endtime/2
         endminute=0
       else:
         endhour=event.endtime/2
         endminute=30
+      logging.info(startminute)
+      logging.info(endminute)
       dtstart=datetime.datetime(event.startdate.year, event.startdate.month, event.startdate.day,starthour+8,startminute).strftime("%Y%m%dT%H%M%S")
       dtend=datetime.datetime(event.startdate.year, event.startdate.month, event.startdate.day,endhour+8,endminute).strftime("%Y%m%dT%H%M%S")
-      response += "BEGIN:VEVENT\nDTSTART:%s\nDTEND:%s\nLOCATION:%s\nSUMMARY:%s\nEND:VEVENT\n" % (dtstart,dtend,event.roomnum,event.userid)
+      response += 'BEGIN:VEVENT\nDTSTART;TZID="America/New_York":%s\nDTEND;TZID="America/New_York":%s\nLOCATION:%s\nSUMMARY:%s\nEND:VEVENT\n' % (dtstart,dtend,event.roomnum,event.userid)
     response += "END:VCALENDAR"
     self.response.headers['Content-Type'] = 'text/calendar'
     self.response.out.write(response)
