@@ -125,7 +125,7 @@ class RoomDetailHandler(BaseHandler):
         'sdate': sdate,
         'stime': timetable[int(stime)],
         'etime': timetable[int(etime)],
-        'timestamp': timestamp,
+        'timestamp': timestamp.strftime("%Y-%m-%d %H:%M:%S"),
       }
       self.render_template("roomsuccess.html", **template_args)
 
