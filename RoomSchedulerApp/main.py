@@ -112,7 +112,7 @@ class CalendarEmbedHandler(BaseHandler):
 class AboutHandler(BaseHandler):
   def get(self):
 	template_args = {}
-	self.render_template("about.html", **template-args)
+	self.render_template("about.html", **template_args)
 		
 application = webapp2.WSGIApplication([
     webapp2.Route(r'/', handler=MainHandler, name='home'),
