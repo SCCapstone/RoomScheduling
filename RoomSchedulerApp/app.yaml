@@ -49,6 +49,9 @@ handlers:
   
 - url: /adminlist\.html
   script: main.py
+  
+- url: /about\.html
+  script: main.py
 
 - url: /.*
   script: main.py
