@@ -1,11 +1,5 @@
 http://roomscheduler490.appspot.com  
 
-Admin login: 
-
-username: rs490test@gmail.com  
-password: tset094sr
-
-
 Room reservation workflow:  
 
 Go to the "Rooms" tab.  
